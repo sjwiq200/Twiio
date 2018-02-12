@@ -28,7 +28,7 @@ public class LoginThread extends Thread{
         System.out.println("SOcketThread.run() ==>" + userId);
 
         try{
-            if (restUser.Login(userId) == null){
+            if (restUser.getUser(userId) == null){
 
                 Message message =  new Message();
                 message.what = 100;
@@ -37,7 +37,7 @@ public class LoginThread extends Thread{
             }else{
                 Message message = new Message();
                 message.what = 200;
-                message.obj = restUser.Login(userId);
+                message.obj = restUser.getUser(userId);
                 this.handler.sendMessage(message);
 
             }

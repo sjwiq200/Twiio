@@ -20,25 +20,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //===========================Layout===========================
         loginButton = (Button)findViewById(R.id.loginButton);
         joinButton = (Button)findViewById(R.id.joinButton);
         idEdit = (EditText)findViewById(R.id.idEdit);
         passwordEdit = (EditText)findViewById(R.id.passwordEdit);
 
-        //Login Button
+        //===========================Login Button Event===========================
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent =  new Intent(view.getContext(), LoginActivity.class);
                 intent.putExtra("userId", idEdit.getText().toString());
                 intent.putExtra("password", passwordEdit.getText().toString());
-
                 startActivityForResult(intent,100);
             }
         });
-
-
-        //Join Button
+        //===========================Join Button Event===========================
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

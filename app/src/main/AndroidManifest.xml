@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".JoinActivity"/>
         <activity android:name=".LoginActivity"/>
+        <activity android:name=".GetUserActivity"/>
+        <activity android:name=".MypageActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
