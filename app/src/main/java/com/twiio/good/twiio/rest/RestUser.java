@@ -23,19 +23,21 @@ import java.io.InputStreamReader;
  */
 
 public class RestUser{
+
+    String fixUrl = "http://192.168.0.29:8080/user/json/";
+
     public RestUser() {
         System.out.println(this.getClass());
     }
 
-    public User Login(String userId) throws Exception{
+    public User getUser(String userId) throws Exception{
 
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();
 
         System.out.println("RestUser.Login()==>"+userId);
 
-        String url= "http://192.168.0.29:8080/user/json/getUserAndroid/"+userId.trim();
-//        String url= "http://localhost:8080/user/json/getUserAndroid/"+userId.trim();
+        String url = fixUrl+"getUserAndroid/"+userId.trim();
 
         // HttpGet : Http Protocol 의 GET 방식 Request
         HttpGet httpGet = new HttpGet(url);
@@ -71,7 +73,7 @@ public class RestUser{
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();
 
-        String url= "http://192.168.0.29:8080/user/json/addUser";
+        String url= fixUrl+"addUser";
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-Type", "application/json");
@@ -102,4 +104,5 @@ public class RestUser{
         System.out.println("userResult==>"+userResult);*/
 
     }
+
 }

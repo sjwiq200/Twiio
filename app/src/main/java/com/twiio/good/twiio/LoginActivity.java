@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.twiio.good.twiio.domain.User;
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity{
     String password;
     TextView userIdText;
     LoginThread loginThread;
+    Button mypage;
     private Handler handler =  new Handler() {
         public void handleMessage(Message message) {
             if (message.what == 100) {
@@ -50,14 +53,31 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userIdText = findViewById(R.id.userIdText);
+        //===========================Layout===========================
+        userIdText = (TextView)findViewById(R.id.userIdText);
+        mypage = (Button)findViewById(R.id.mypage);
 
-        Intent intent = this.getIntent();
+        //===========================Intent===========================
+
+        final Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
         password = intent.getStringExtra("password");
 
+        //===========================Thread Start===========================
+
         loginThread = new LoginThread(handler,userId);
         loginThread.start();
+
+
+        //===========================mypage Click Event===========================
+        mypage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentMypage = new Intent(LoginActivity.this,MypageActivity.class);
+                intentMypage.putExtra("userId",userId);
+                startActivity(intentMypage);
+            }
+        });
 
         }
 
