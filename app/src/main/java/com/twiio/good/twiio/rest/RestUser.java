@@ -27,15 +27,14 @@ public class RestUser{
     String fixUrl = "http://192.168.0.29:8080/user/json/";
 
     public RestUser() {
-        System.out.println(this.getClass());
+
     }
 
     public User getUser(String userId) throws Exception{
+        System.out.println(this.getClass()+".getUser(String userId");
 
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();
-
-        System.out.println("RestUser.Login()==>"+userId);
 
         String url = fixUrl+"getUserAndroid/"+userId.trim();
 
@@ -70,6 +69,7 @@ public class RestUser{
     }
 
     public void addUser(User user) throws Exception{
+        System.out.println(this.getClass()+".addUser(User user)");
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();
 

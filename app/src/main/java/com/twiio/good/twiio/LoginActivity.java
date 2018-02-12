@@ -25,6 +25,7 @@ public class LoginActivity extends AppCompatActivity{
     TextView userIdText;
     LoginThread loginThread;
     Button mypage;
+    Button twiiChat;
     private Handler handler =  new Handler() {
         public void handleMessage(Message message) {
             if (message.what == 100) {
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity{
         //===========================Layout===========================
         userIdText = (TextView)findViewById(R.id.userIdText);
         mypage = (Button)findViewById(R.id.mypage);
+        twiiChat = (Button)findViewById(R.id.twiiChat);
 
         //===========================Intent===========================
 
@@ -76,6 +78,15 @@ public class LoginActivity extends AppCompatActivity{
                 Intent intentMypage = new Intent(LoginActivity.this,MypageActivity.class);
                 intentMypage.putExtra("userId",userId);
                 startActivity(intentMypage);
+            }
+        });
+        //===========================TwiiChat Click Event===========================
+        twiiChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentTwiiChat = new Intent(LoginActivity.this,ChatActivity.class);
+                intentTwiiChat.putExtra("userId",userId);
+                startActivity(intentTwiiChat);
             }
         });
 

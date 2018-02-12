@@ -20,6 +20,10 @@
         <activity android:name=".LoginActivity"/>
         <activity android:name=".GetUserActivity"/>
         <activity android:name=".MypageActivity"/>
+
+        <activity android:name=".ChatActivity"/>
+        <activity android:name=".ListMyRoomActivity"/>
+        <activity android:name=".ListRoomActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
