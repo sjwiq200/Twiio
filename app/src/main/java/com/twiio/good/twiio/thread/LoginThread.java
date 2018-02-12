@@ -14,7 +14,6 @@ public class LoginThread extends Thread{
 
     private Handler handler;
     private String userId;
-    private boolean flag = false;
     public LoginThread() {
     }
 
