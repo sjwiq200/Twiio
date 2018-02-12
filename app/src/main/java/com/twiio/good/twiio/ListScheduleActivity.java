@@ -11,24 +11,24 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.twiio.good.twiio.domain.Room;
-import com.twiio.good.twiio.thread.ListMyRoomThread;
+import com.twiio.good.twiio.domain.Schedule;
+import com.twiio.good.twiio.thread.ListScheduleThread;
 
 import java.util.List;
 
-public class ListMyRoomActivity extends AppCompatActivity {
+public class ListScheduleActivity extends AppCompatActivity {
 
-    ListMyRoomThread listMyRoomThread;
     String userId;
+    ListScheduleThread listScheduleThread;
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
-            List<Room> list = (List<Room>)message.obj;
-            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListMyRoomActivity.this,R.layout.activity_inflatelist,null); //new Layout
-            ScrollView scrollView = (ScrollView)findViewById(R.id.listRoomScroll);
-            for(Room room : list){
-                TextView textView = new TextView(ListMyRoomActivity.this);
-                textView.setText("roomName = "+room.getRoomName()+"Country = " + room.getCountry());
+            List<Schedule> list = (List<Schedule>)message.obj;
+            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListScheduleActivity.this,R.layout.activity_inflatelist,null); //new Layout
+            ScrollView scrollView = (ScrollView)findViewById(R.id.listScheduleScroll);
+            for(Schedule schedule : list){
+                TextView textView = new TextView(ListScheduleActivity.this);
+                textView.setText("scheduleTitle = "+schedule.getScheduleTitle()+"Country = " + schedule.getCountry());
 
                 insertLinearLayout.addView(textView);
             }
@@ -40,15 +40,15 @@ public class ListMyRoomActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listroom);
+        setContentView(R.layout.activity_listschedule);
 
         //===========================Intent===========================
         Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
 
         //===========================Thread Start===========================
-        listMyRoomThread = new ListMyRoomThread(handler,userId);
-        listMyRoomThread.start();
+        listScheduleThread =  new ListScheduleThread(handler,userId);
+        listScheduleThread.start();
 
 
     }
