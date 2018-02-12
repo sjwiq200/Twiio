@@ -28,6 +28,7 @@ public class ChatActivity extends AppCompatActivity {
         //===========================Layout===========================
         listRoom = (Button)findViewById(R.id.listRoom);
         listMyRoom = (Button)findViewById(R.id.listMyRoom);
+        listSchedule = (Button) findViewById(R.id.listSchedule);
 
         //===========================Intent===========================
         Intent intent = this.getIntent();
@@ -49,6 +50,16 @@ public class ChatActivity extends AppCompatActivity {
                 Intent intentListMyRoom = new Intent(ChatActivity.this,ListMyRoomActivity.class);
                 intentListMyRoom.putExtra("userId",userId);
                 startActivity(intentListMyRoom);
+
+            }
+        });
+        //===========================listSchedule Click Event===========================
+        listSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentListSchedule = new Intent(ChatActivity.this,ListScheduleActivity.class);
+                intentListSchedule.putExtra("userId",userId);
+                startActivity(intentListSchedule);
 
             }
         });

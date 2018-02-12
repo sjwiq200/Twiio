@@ -75,6 +75,44 @@ public class RestRoom {
         return list;
     }
 
+    public List<Room> listMyRoom(Search search, String userId) throws Exception{
+
+        System.out.println(this.getClass()+".listMyRoom()");
+
+        // HttpClient : Http Protocol 의 client 추상화
+        HttpClient httpClient = new DefaultHttpClient();
+        String url = fixUrl+"listMyRoom/"+userId;
+
+        // POST request
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String jsonValue = objectMapper.writeValueAsString(search);
+        HttpEntity httpEntity = new StringEntity(jsonValue,"utf-8");
+        //requestBody
+        httpPost.setEntity(httpEntity);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+
+        HttpEntity httpEntityResult = httpResponse.getEntity();
+
+        //==> InputStream 생성
+        InputStream is = httpEntityResult.getContent();
+        BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
+
+        JSONArray jsonobj = (JSONArray)JSONValue.parse(br);
+        System.out.println(jsonobj);
+
+        ObjectMapper objectMapperResult = new ObjectMapper();
+
+        List<Room> list = objectMapperResult.readValue(jsonobj.toString(), new TypeReference<List<Room>>() {});
+
+        System.out.println("roomResult==>"+list);
+        return list;
+    }
+
 
 
 
