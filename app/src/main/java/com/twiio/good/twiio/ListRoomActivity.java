@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -26,8 +27,11 @@ public class ListRoomActivity extends AppCompatActivity {
           for(Room room : list){
               TextView textView = new TextView(ListRoomActivity.this);
               textView.setText("roomName = "+room.getRoomName()+"Country = " + room.getCountry());
+              Button button = new Button(ListRoomActivity.this);
+              button.setText(room.getRoomKey());
 
               insertLinearLayout.addView(textView);
+              insertLinearLayout.addView(button);
           }
           insertLinearLayout.setGravity(Gravity.CENTER);
           scrollView.addView(insertLinearLayout);
