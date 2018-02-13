@@ -23,6 +23,7 @@ public class ListRoomThread extends Thread{
 
 
     public void run(){
+        System.out.println(this.getClass()+".run()");
         RestRoom restRoom = new RestRoom();
 
         try{

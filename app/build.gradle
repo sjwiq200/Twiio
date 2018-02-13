@@ -42,9 +42,7 @@ dependencies {
     implementation files('libs/jackson-mapper-asl-1.9.13.jar')
     implementation files('libs/json_simple-1.1.jar')
 
-    compile ('io.socket:socket.io-client:1.0.0') {
-        exclude group: 'org.json', module: 'json'
-    }
+    compile 'com.github.nkzawa:socket.io-client:0.3.0'
 }
 
 
