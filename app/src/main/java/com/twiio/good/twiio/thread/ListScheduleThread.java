@@ -29,9 +29,10 @@ public class ListScheduleThread extends Thread{
         RestSchedule restSchedule = new RestSchedule();
 
         try{
+            Search search = new Search();
             Message message = new Message();
             message.what = 200;
-            message.obj = restSchedule.listSchedule(userId);
+            message.obj = restSchedule.listSchedule(search, userId);
             handler.sendMessage(message);
 
         }

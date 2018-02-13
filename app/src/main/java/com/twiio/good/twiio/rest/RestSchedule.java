@@ -32,7 +32,7 @@ public class RestSchedule {
     public RestSchedule() {
     }
 
-    public List<Schedule> listSchedule(String userId) throws Exception{
+    public List<Schedule> listSchedule(Search search, String userId) throws Exception{
 
         System.out.println(this.getClass()+".listSchedule()");
 
@@ -40,15 +40,19 @@ public class RestSchedule {
         HttpClient httpClient = new DefaultHttpClient();
         String url = fixUrl+"listSchedule/"+userId;
 
-        // HttpGet : Http Protocol 의 GET 방식 Request
-        HttpGet httpGet = new HttpGet(url);
-        httpGet.setHeader("Accept", "application/json");
-        httpGet.setHeader("Content-Type", "application/json");
+        // POST request
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
 
-        // HttpResponse : Http Protocol 응답 Message 추상화
-        HttpResponse httpResponse = httpClient.execute(httpGet);
+        ObjectMapper objectMapper = new ObjectMapper();
 
-        //==> Response 중 entity(DATA) 확인
+        String jsonValue = objectMapper.writeValueAsString(search);
+        HttpEntity httpEntity = new StringEntity(jsonValue,"utf-8");
+        //requestBody
+        httpPost.setEntity(httpEntity);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+
         HttpEntity httpEntityResult = httpResponse.getEntity();
 
         //==> InputStream 생성
@@ -63,6 +67,8 @@ public class RestSchedule {
         List<Schedule> list = objectMapperResult.readValue(jsonobj.toString(), new TypeReference<List<Schedule>>() {});
 
         System.out.println("roomResult==>"+list);
+
+
         return list;
     }
 
