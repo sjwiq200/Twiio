@@ -24,6 +24,7 @@
         <activity android:name=".ChatActivity"/>
         <activity android:name=".ListMyRoomActivity"/>
         <activity android:name=".ListRoomActivity"/>
+        <activity android:name=".ChatRoomActivity"/>
 
         <activity android:name=".ListScheduleActivity"/>
     </application>

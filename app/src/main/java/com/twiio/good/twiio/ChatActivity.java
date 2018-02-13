@@ -7,10 +7,9 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.twiio.good.twiio.domain.User;
-import com.twiio.good.twiio.thread.GetUserThread;
+import com.twiio.good.twiio.thread.ChatThread;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -19,6 +18,15 @@ public class ChatActivity extends AppCompatActivity {
     Button listSchedule;
 
     String userId;
+    int userNo;
+
+    ChatThread chatThread;
+
+    private Handler handlerUser = new Handler(){
+      public void handleMessage(Message message) {
+          userNo = ((User)message.obj).getUserNo();
+      }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +42,18 @@ public class ChatActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
 
+        //===========================Thread Start===========================
+        chatThread = new ChatThread(handlerUser, userId);
+        chatThread.start();
+
         //===========================listRoom Click Event===========================
         listRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentListRoom = new Intent(ChatActivity.this,ListRoomActivity.class);
+                intentListRoom.putExtra("userId",userId);
+                intentListRoom.putExtra("userNo",userNo);
+
                 startActivity(intentListRoom);
             }
         });

@@ -2,6 +2,9 @@ package com.twiio.good.twiio.domain;
 
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.sql.Date;
 import java.util.Properties;
 
@@ -13,6 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 public class User {
+
 
 	private int userNo;
 	private String userId;
@@ -409,6 +413,58 @@ public class User {
 	public void setMainPlanNoShared(String mainPlanNoShared) {
 		this.mainPlanNoShared = mainPlanNoShared;
 	}
+
+//	@Override
+//	public int describeContents() {
+//		return 0;
+//	}
+//
+//	@Override
+//	public void writeToParcel(Parcel parcel, int i) {
+//		parcel.writeInt(userNo);
+//		parcel.writeString(userId);
+//		parcel.writeString(password);
+//		parcel.writeString(passwordConfirm);
+//		parcel.writeString(userName);
+//		parcel.writeString(userBirthday);
+//		parcel.writeString(userGender);
+//		parcel.writeString(userPhone);
+//		parcel.writeString(userEmail);
+//		parcel.writeString(userAccount);
+//		parcel.writeString(userType);
+//		parcel.writeDouble(userEval);
+//		parcel.writeDouble(userEvalCredit);
+//		parcel.writeString(userImage);
+//		parcel.writeValue(regDate);
+//		parcel.writeString(profilePublic);
+//		parcel.writeString(userRegisterType);
+//		parcel.writeString(userLeave);
+//		parcel.writeString(userBank);
+//		parcel.writeInt(attendanceRate);
+//		parcel.writeInt(profileCredibility);
+//		parcel.writeDouble(starEvalHost);
+//		parcel.writeString(reviewHost);
+//		parcel.writeString(emailVer);
+//		parcel.writeString(mainPlanNoShared);
+//		parcel.writeString(phone1);
+//		parcel.writeString(phone2);
+//		parcel.writeString(phone3);
+//		parcel.writeString(kaccount_email);
+//		parcel.writeString(kaccount_email_verified);
+//		parcel.writeValue(properties);
+//
+//		parcel.writeString(id);
+//		parcel.writeString(gender);
+//		parcel.writeString(name);
+//		parcel.writeString(link);
+//		parcel.writeString(verified_email);
+//		parcel.writeString(given_name);
+//		parcel.writeString(locale);
+//		parcel.writeString(family_name);
+//		parcel.writeString(email);
+//		parcel.writeString(picture);
+//	}
+
 
 
 }
