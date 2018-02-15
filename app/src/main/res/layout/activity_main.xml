@@ -6,52 +6,52 @@
     android:layout_height="match_parent"
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
-    android:paddingTop="50dp">
+    android:paddingTop="50dp"
+    android:alpha="0.7"
+    android:background="@drawable/main_2"
+    >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TWIIO"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/pacifico"
         android:layout_gravity="center"
-        android:textSize="100dp"/>
+        android:textSize="70dp"
+        android:textColor="@color/color_black"/>
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ID"
-        android:layout_margin="10dp"/>
 
     <EditText
         android:id="@+id/idEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_margin="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password"
-        android:layout_margin="10dp"/>
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:hint="아이디를 입력해주세요."
+        android:paddingLeft="15dp"
+        android:background="@drawable/rounded_edittext"/>
 
     <EditText
         android:id="@+id/passwordEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:layout_margin="10dp" />
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:hint="비밀번호를 입력해주세요."
+        android:layout_margin="20dp"
+        android:paddingLeft="15dp"
+        android:background="@drawable/rounded_edittext"
+        android:inputType="textPassword"/>
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp">
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:text="로그인"/>
 
         <Button
@@ -60,7 +60,5 @@
             android:layout_height="wrap_content"
             android:text="회원가입"/>
     </LinearLayout>
-
-
 
 </LinearLayout>

@@ -16,19 +16,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--Index Activity-->
         <activity android:name=".JoinActivity"/>
         <activity android:name=".LoginActivity"/>
+
+        <!--Mypage Activity-->
         <activity android:name=".GetUserActivity"/>
         <activity android:name=".MypageActivity"/>
 
+        <!--Chat Activity-->
         <activity android:name=".ChatActivity"/>
         <activity android:name=".ListMyRoomActivity"/>
         <activity android:name=".ListRoomActivity"/>
         <activity android:name=".ChatRoomActivity"/>
 
+        <!--Schedule Activity-->
         <activity android:name=".ListScheduleActivity"/>
     </application>
-
+    <!--Internet Permission-->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!--File System & Camera Permission-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
 
 </manifest>

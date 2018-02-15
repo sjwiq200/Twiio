@@ -6,15 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
-    android:paddingTop="50dp">
+    android:paddingTop="50dp"
+    android:background="@color/colorBackGround">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TWIIO"
+        android:fontFamily="@font/pacifico"
         android:layout_gravity="center"
-        android:textSize="100dp"/>
+        android:textSize="70dp"
+        />
 
 
     <TextView
@@ -24,31 +27,61 @@
         android:id="@+id/userIdText"
         android:layout_margin="10dp"
         android:layout_gravity="center"
-        android:textSize="30dp"/>
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingTop="50dp">
+        android:layout_marginTop="50dp"
+        >
 
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/moim_createpost_menu_btn_emoticon_off_up" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="40dp"
+            android:src="@drawable/moim_boards_menu_icon_chatroom" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="40dp"
+            android:src="@drawable/moim_boards_menu_icon_createpost" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
 
         <Button
             android:id="@+id/mypage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="mypage"/>
+            android:text="mypage" />
+
         <Button
             android:id="@+id/twiiChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TwiiChat"/>
+            android:text="TwiiChat" />
+
         <Button
             android:id="@+id/twiiBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TwiiBook"/>
-
+            android:text="TwiiBook" />
 
 
     </LinearLayout>
