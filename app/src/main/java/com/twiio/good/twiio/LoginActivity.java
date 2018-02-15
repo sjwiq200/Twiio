@@ -37,8 +37,8 @@ public class LoginActivity extends AppCompatActivity{
 
                 User user = (User) message.obj;
                 if (user.getPassword().equals(password)) {
-                    userIdText.setText(user.getUserId() + "님 로그인!");
-
+//                    userIdText.setText(user.getUserId() + "님 로그인!");
+                    userIdText.setText(user.getUserName() + "님 안녕하세요!");
                 } else {
                     Intent intent = new Intent();
                     intent.putExtra("returnValue", "id,password가 틀렸습니다");
