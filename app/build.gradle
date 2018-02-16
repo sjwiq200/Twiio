@@ -42,7 +42,14 @@ dependencies {
     implementation files('libs/jackson-mapper-asl-1.9.13.jar')
     implementation files('libs/json_simple-1.1.jar')
 
+//    Socket.io
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
+
+//    Permission Check Lib
+    compile 'gun0912.ted:tedpermission:2.0.0'
+
+
+
 }
 
 

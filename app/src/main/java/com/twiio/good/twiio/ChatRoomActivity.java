@@ -1,12 +1,20 @@
 package com.twiio.good.twiio;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -18,15 +26,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+import com.twiio.good.twiio.thread.SendImageThread;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class ChatRoomActivity extends AppCompatActivity {
@@ -42,26 +68,23 @@ public class ChatRoomActivity extends AppCompatActivity {
     Button sendButton;
     ScrollView scrollView;
 
-    String userAvatar = "http://localhost:8080/resources/images/room/";
-    String url = "http://192.168.0.29:8282/#/v1/";
+    SendImageThread sendImageThread;
+    private Handler handler = new Handler(){
+        public void HandleMessage(Message message){
+
+        }
+    };
+
+//    String userAvatar = "http://192.168.0.29:8080/resources/images/room/";
+    String userAvatar = "http://192.0.0.9:8080/resources/images/room/";
+//    String url = "http://192.168.0.29:8282/#/v1/";
+    String url = "http://192.168.0.9:8282/#/v1/";
 
     private Socket socket;
 
     private final int GALLERY_CODE = 5000;
 
-    public String getImageNameToUri(Uri data)
-    {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(data, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 
-        cursor.moveToFirst();
-
-        String imgPath = cursor.getString(column_index);
-        String imgName = imgPath.substring(imgPath.lastIndexOf("/")+1);
-
-        return imgName;
-    }
 
     //===========================Change Date Format===========================
     public String formatAMPM(Date date) {
@@ -103,8 +126,12 @@ public class ChatRoomActivity extends AppCompatActivity {
         userNo = intent.getIntExtra("userNo",0);
         master = intent.getIntExtra("master",0);
 
-        //===========================Thread Start===========================
+        //===========================GET Permission ===========================
+        //API 23 이상부터 manifests 말고 런타임시 Permission을 획득해야 함
 
+        TedPermission.with(this).setPermissionListener(permissionlistener)
+                .setRationaleMessage("사진 접근 권한 필요").setDeniedMessage("거부하셨네요")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE);
 
         //===========================Socket.io Start===========================
         //===========================Connect===========================
@@ -215,6 +242,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         try{
             socket.on("new message",onMessageReceived);
             socket.on("history response",onHistory);
+            socket.on("new message image",onImageReceived);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -383,12 +411,66 @@ public class ChatRoomActivity extends AppCompatActivity {
         }
     };//END onHistory
 
+    private Emitter.Listener onImageReceived = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            final JSONObject response = (JSONObject) args[0];
+            System.out.println("onHistory ==> " + response);
+            ChatRoomActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    /*LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ChatRoomActivity.this,R.layout.activity_inflatechat,null); //new Layout
+                    LinearLayout linearLayout = (LinearLayout)findViewById(R.id.chatRoomMessage);
+
+                    TextView textView = new TextView(ChatRoomActivity.this);
+                    ViewGroup.LayoutParams width = null;
+                    Drawable drawableTo = getResources().getDrawable(
+                            R.drawable.rounded_edittext2);
+                    Drawable drawableFrom = getResources().getDrawable(
+                            R.drawable.rounded_edittext);
+                    try{
+                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
+                        if(response.get("userName").toString().equals(userId)){
+                            textView.setText(response.get("msg")+" ");
+                            textView.setBackground(drawableTo);
+                            textView.setTextSize(20);
+                            width = new ViewGroup.LayoutParams((("  "+response.get("msg")+" ").length()*55)/2, 90);
+                            insertLinearLayout.setGravity(Gravity.RIGHT);
+                            insertLinearLayout.setPadding(10,10,10, 0);
+                            textView.setGravity(Gravity.RIGHT);
+
+
+                        }
+                        else{
+                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
+                            textView.setBackground(drawableFrom);
+                            textView.setTextSize(20);
+                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
+                            insertLinearLayout.setGravity(Gravity.LEFT);
+                            insertLinearLayout.setPadding(10,10,10, 0);
+                            textView.setGravity(Gravity.LEFT);
+                        }
+                        insertLinearLayout.addView(textView, width);
+                        linearLayout.addView(insertLinearLayout);
+                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }*/
+
+                }//END run()
+            });
+
+        }
+    }; //END onImageReceived
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == GALLERY_CODE){
             if(resultCode == RESULT_OK){
-                String uri = getImageNameToUri(data.getData());
+                String absolutePath = getImageNameToUri(data.getData());
+                String fileName = absolutePath.substring(absolutePath.lastIndexOf("/")+1);
                 try{
                     //=========================== Inflation ===========================
                     LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ChatRoomActivity.this,R.layout.activity_inflatechat,null); //new Layout
@@ -399,6 +481,9 @@ public class ChatRoomActivity extends AppCompatActivity {
                     insertLinearLayout.addView(imageView);
                     linearLayout.addView(insertLinearLayout);
                     scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+                    //Send Image
+                    sendImage(absolutePath,fileName);
                 }
                 catch(Exception e){
                     e.printStackTrace();
@@ -407,6 +492,70 @@ public class ChatRoomActivity extends AppCompatActivity {
 
         }//END requestCode
     }//END onActivityResult
+
+    protected void sendImage(final String absolutePath,final String fileName) {
+
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+
+        builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+//        builder.addTextBody("Key 값", "Value 값", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("userName", userId, ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("userAvatar", userAvatar+"Avatar1.jpg", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("hasFile", "true", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("isImageFile", "true", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("istype", "image", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("showme", "true", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("istype", "image", ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("dwid", userId+"dwid"+new Date(), ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("msgTime", formatAMPM(new Date()), ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("filename", fileName, ContentType.create("Multipart/related", "UTF-8"));
+        builder.addTextBody("roomKey", roomKey, ContentType.create("Multipart/related", "UTF-8"));
+
+        builder.addPart("file", new FileBody(new File(absolutePath)));
+
+
+
+        sendImageThread = new SendImageThread(handler,builder);
+        sendImageThread.start();
+
+//        HttpClient httpClient = AndroidHttpClient.newInstance("Android");
+
+
+
+    }//END sendImage
+
+    public String getImageNameToUri(Uri data)
+    {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(data, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        String imgPath = cursor.getString(column_index);
+//        String imgName = imgPath.substring(imgPath.lastIndexOf("/")+1);
+
+        return imgPath;
+    }
+
+
+
+    //PermissionListener
+    PermissionListener permissionlistener = new PermissionListener() {
+        @Override
+        public void onPermissionGranted() {
+            Toast.makeText(ChatRoomActivity.this, "권한 허가", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+            Toast.makeText(ChatRoomActivity.this, "권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+
+    };
+
 
     protected void onDestroy(){
         super.onDestroy();

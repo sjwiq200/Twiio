@@ -27,7 +27,8 @@ import java.util.List;
 
 public class RestSchedule {
 
-    String fixUrl = "http://192.168.0.29:8080/schedule/json/";
+//    String fixUrl = "http://192.168.0.29:8080/schedule/json/";
+    String fixUrl = "http://192.168.0.9:8080/schedule/json/";
 
     public RestSchedule() {
     }
