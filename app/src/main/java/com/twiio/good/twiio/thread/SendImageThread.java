@@ -45,20 +45,20 @@ public class SendImageThread extends Thread{
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(builder.build());
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            inputStream = httpEntity.getContent();
+            httpClient.execute(httpPost);
+//            HttpEntity httpEntity = httpResponse.getEntity();
+//            inputStream = httpEntity.getContent();
+//
+//            BufferedReader bufferdReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+//
+//            StringBuilder stringBuilder = new StringBuilder();
+//
+//            String line = null;
 
-            BufferedReader bufferdReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            String line = null;
-
-            while ((line = bufferdReader.readLine()) != null) {
-                stringBuilder.append(line + "\n");
-            }
-            inputStream.close();
+//            while ((line = bufferdReader.readLine()) != null) {
+//                stringBuilder.append(line + "\n");
+//            }
+//            inputStream.close();
         }
         catch(Exception e){
             e.printStackTrace();

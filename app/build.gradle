@@ -48,6 +48,9 @@ dependencies {
 //    Permission Check Lib
     compile 'gun0912.ted:tedpermission:2.0.0'
 
+//    Image Load Lib
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 
 
 }
