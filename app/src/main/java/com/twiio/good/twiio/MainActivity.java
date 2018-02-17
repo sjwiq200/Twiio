@@ -3,10 +3,13 @@ package com.twiio.good.twiio;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,7 +48,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+
+        //FCM Test
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        System.out.println("Token value ==> "+token);
+
+    }//END onCreate
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

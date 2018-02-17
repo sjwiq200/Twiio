@@ -51,8 +51,10 @@ dependencies {
 //    Image Load Lib
     compile 'com.squareup.picasso:picasso:2.5.2'
 
+//    FCM
 
+    compile 'com.google.firebase:firebase-messaging:11.6.2'
 
 }
-
-
+    //FCM
+apply plugin: 'com.google.gms.google-services'

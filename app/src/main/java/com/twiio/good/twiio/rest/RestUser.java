@@ -25,7 +25,8 @@ import java.io.InputStreamReader;
 public class RestUser{
 
 //    String fixUrl = "http://192.168.0.29:8080/user/json/";
-    String fixUrl = "http://192.168.0.9:8080/user/json/";
+//    String fixUrl = "http://192.168.0.9:8080/user/json/";
+    String fixUrl = "http://172.30.1.37:8080/user/json/";
 
     public RestUser() {
 
