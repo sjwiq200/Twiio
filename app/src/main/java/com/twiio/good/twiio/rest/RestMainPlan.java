@@ -1,6 +1,10 @@
 package com.twiio.good.twiio.rest;
 
+import android.util.Log;
+
+import com.twiio.good.twiio.common.Search;
 import com.twiio.good.twiio.domain.MainPlan;
+import com.twiio.good.twiio.domain.Room;
 import com.twiio.good.twiio.domain.User;
 
 import org.apache.http.HttpEntity;
@@ -8,7 +12,10 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.json.simple.JSONArray;
@@ -16,6 +23,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -26,7 +34,8 @@ import java.util.List;
 
 public class RestMainPlan {
 
-    String fixUrl = "http://192.168.0.73:8080/mainplan/json/";
+    String fixUrl = "http://192.168.0.45:8080/mainplan/json/";
+    private String urlThumbnail = "http://192.168.0.45:8080/mainplan/json/uploadImage/";
 
     public RestMainPlan() {
     }
@@ -48,14 +57,12 @@ public class RestMainPlan {
         User user = new User();
         user.setUserId(userId);
 
-        System.out.println("##DEBUG : REST MAIN PLAN ###" + userId);
-
         String jsonValue = objectMapper.writeValueAsString(user);
         HttpEntity httpEntity = new StringEntity(jsonValue,"utf-8");
 
         httpPost.setEntity(httpEntity);
         HttpResponse httpResponse = httpClient.execute(httpPost);
-        System.out.println("##DEBUG RESTMAINPLAN.JAVA" + httpResponse);
+
         HttpEntity httpEntityResult = httpResponse.getEntity();
 
         //==> InputStream 생성
@@ -77,9 +84,10 @@ public class RestMainPlan {
         return list;
     }
 
-    public Boolean addMainPlan(MainPlan mainPlan) throws Exception{
+    public String addMainPlan(MainPlan mainPlan, String imagePath) throws Exception{
         System.out.println(this.getClass()+".addMainPlan()");
         System.out.println("mainPlan :: "+mainPlan);
+        System.out.println("imagePath :: "+imagePath);
 
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();
@@ -104,19 +112,45 @@ public class RestMainPlan {
         InputStream is = httpEntityResult.getContent();
         BufferedReader br = new BufferedReader(new InputStreamReader(is,"UTF-8"));
 
-        JSONObject jsonobj = (JSONObject)JSONValue.parse(br);
-        System.out.println("JSON Simple Object : " + jsonobj);
+        String string = br.readLine();
+        br.close();
+        System.out.println("string ::"+string);
 
-//        if( jsonobj == null){
-//            return null;
-//        }
+//        HttpClient httpClient02 = new DefaultHttpClient();
+//        HttpPost httpPost02 = new HttpPost(urlThumbnail);
+//        httpPost02.setEntity(builder.build());
+//        httpClient02.execute(httpPost);
+        uploadImage(imagePath);
 
-        ObjectMapper objectMapperResult = new ObjectMapper();
+        return string;
+    }
 
-        Boolean boo = objectMapperResult.readValue(jsonobj.toString(), new TypeReference<Boolean>() {});
+    private void uploadImage(String imagePath){
+        System.out.println(":: uploadImage start!! ::");
+        try
+        {
+            HttpClient client = new DefaultHttpClient();
+            File file = new File(imagePath);
+            HttpPost post = new HttpPost(urlThumbnail);
 
-        System.out.println("addMainPlanResult==>"+boo);
-        return boo;
+            MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+            entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            entityBuilder.addBinaryBody("file", file);
+            // add more key/value pairs here as needed
+
+            HttpEntity entity = entityBuilder.build();
+            post.setEntity(entity);
+
+            HttpResponse response = client.execute(post);
+            HttpEntity httpEntity = response.getEntity();
+
+            Log.v("result", EntityUtils.toString(httpEntity));
+            System.out.println(":: uploadImage end!! ::");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

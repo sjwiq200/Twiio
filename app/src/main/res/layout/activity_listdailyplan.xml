@@ -7,6 +7,35 @@
     android:layout_margin="2dp"
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CONTENTS"
+            android:fontFamily="@font/typojeongjol"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="50dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TWIIBOOK"
+            android:fontFamily="@font/typojeongjol"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textSize="20dp"/>
+
+    </RelativeLayout>
+
 
     <!-- Layout Definition : Layout 충첩 및 ETC -->
     <ScrollView
@@ -14,9 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="95">
-
-
-
 
     </ScrollView>
 

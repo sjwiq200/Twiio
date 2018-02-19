@@ -32,16 +32,15 @@ import java.util.Vector;
 public class RestRoom {
 
 //    String fixUrl = "http://192.168.0.29:8080/room/json/";
-    String fixUrl = "http://192.168.0.73:8080/room/json/";
+    String fixUrl = "http://192.168.0.45:8080/room/json/";
 //    String fixUrl = "http://172.30.1.37:8080/room/json/";
 
     public RestRoom() {
     }
 
-    public List<Room> listRoom() throws Exception{
+    public List<Room> listRoom(Search search) throws Exception{
         System.out.println(this.getClass()+".listRoom()");
-
-        Search search = new Search();
+//        Search search = new Search();
 
         // HttpClient : Http Protocol 의 client 추상화
         HttpClient httpClient = new DefaultHttpClient();

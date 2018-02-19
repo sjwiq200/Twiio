@@ -3,6 +3,7 @@ package com.twiio.good.twiio.thread;
 import android.os.Handler;
 import android.os.Message;
 
+import com.twiio.good.twiio.common.Search;
 import com.twiio.good.twiio.rest.RestRoom;
 import com.twiio.good.twiio.rest.RestUser;
 
@@ -13,12 +14,14 @@ import com.twiio.good.twiio.rest.RestUser;
 
 public class ListRoomThread extends Thread{
     private Handler handler;
+    private Search search;
 
     public ListRoomThread() {
     }
 
-    public ListRoomThread(Handler handler){
+    public ListRoomThread(Handler handler, Search search){
         this.handler = handler;
+        this.search = search;
     }
 
 
@@ -29,7 +32,7 @@ public class ListRoomThread extends Thread{
         try{
             Message message = new Message();
             message.what = 200;
-            message.obj = restRoom.listRoom();
+            message.obj = restRoom.listRoom(search);
             handler.sendMessage(message);
 
         }

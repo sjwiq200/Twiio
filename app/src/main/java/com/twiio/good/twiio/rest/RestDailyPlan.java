@@ -29,7 +29,7 @@ import java.util.Map;
 public class RestDailyPlan {
 
     //String fixUrl = "http://192.168.0.35:8080/dailyplan/json/";
-    String fixUrl = "http://192.168.0.73:8080/dailyplan/json/";
+    String fixUrl = "http://192.168.0.45:8080/dailyplan/json/";
 
 
     public RestDailyPlan() {

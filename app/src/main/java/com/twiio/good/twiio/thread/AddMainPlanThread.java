@@ -7,6 +7,8 @@ import com.twiio.good.twiio.domain.MainPlan;
 import com.twiio.good.twiio.domain.User;
 import com.twiio.good.twiio.rest.RestMainPlan;
 
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+
 
 /**
  * Created by bitcamp on 2018-02-14.
@@ -18,14 +20,18 @@ public class AddMainPlanThread extends Thread {
     private String userId;
     private MainPlan mainPlan;
     private User user;
+    //private MultipartEntityBuilder builder;
+    private String imagePath;
 
     public AddMainPlanThread() {
     }
 
-    public AddMainPlanThread(Handler handler, String userId, MainPlan mainPlan) {
+    public AddMainPlanThread(Handler handler, String userId, MainPlan mainPlan, String imagePath) {
         this.handler = handler;
         this.userId = userId;
         this.mainPlan = mainPlan;
+        //this.builder = builder;
+        this.imagePath = imagePath;
         user= new User();
         user.setUserId(userId);
         mainPlan.setUser(user);
@@ -39,7 +45,7 @@ public class AddMainPlanThread extends Thread {
         try{
             Message message = new Message();
             message.what = 200;
-            message.obj = restMainPlan.addMainPlan(mainPlan);
+            message.obj = restMainPlan.addMainPlan(mainPlan, imagePath);
             //message.obj = restMainPlan.listMainPlan(userId);
             handler.sendMessage(message);
 

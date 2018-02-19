@@ -8,19 +8,63 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/mainDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="MY PLAN"
+        android:textSize="40dp"
+        android:fontFamily="@font/typojeongjol"
+        android:layout_marginTop="10dp"/>
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="TWIIO"
-        android:textSize="50dp" />
-
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DAY 1"
+            android:textSize="20dp"
+            android:fontFamily="@font/typojeongjol"
+            />
+        <TextView
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DAY 1"
+            android:textSize="20dp"
+            android:fontFamily="@font/typojeongjol"
+            android:layout_toRightOf="@id/date"
+            android:layout_marginLeft="5dp"
+            />
+        <TextView
+            android:id="@+id/city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="DAY 1"
+            android:textSize="20dp"
+            android:fontFamily="@font/typojeongjol"
+            android:layout_toRightOf="@id/country"
+            android:layout_marginLeft="5dp"
+            />
+    </RelativeLayout>
     <!-- Layout Definition : Layout 충첩 및 ETC -->
 
     <ScrollView
         android:id="@+id/dailyPlanScroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="15dp"
+        >
 
     </ScrollView>
 
