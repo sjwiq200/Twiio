@@ -32,8 +32,8 @@ import java.util.Vector;
 public class RestRoom {
 
 //    String fixUrl = "http://192.168.0.29:8080/room/json/";
-//    String fixUrl = "http://192.168.0.9:8080/room/json/";
-    String fixUrl = "http://172.30.1.37:8080/room/json/";
+    String fixUrl = "http://192.168.0.73:8080/room/json/";
+//    String fixUrl = "http://172.30.1.37:8080/room/json/";
 
     public RestRoom() {
     }

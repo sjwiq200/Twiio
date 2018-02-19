@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Layout Definition : Layout 충첩 및 ETC -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:orientation="vertical"
+    android:background="@color/colorBackGround"
+        >
+<!-- Layout Definition : Layout 충첩 및 ETC -->
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/roomListRelat"
+        android:background="@drawable/border">
+
+        <TextView
+            android:id = "@+id/roomNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nanumgothic"
+            android:text="방제목"
+            android:textAlignment="textStart"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/roomNameText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/roomListRelat2"
+            >
+
+            <ImageView
+                android:id="@+id/locationImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/locationText"
+                android:src="@drawable/map" />
+
+            <TextView
+                android:id="@+id/locationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="25dp"
+                android:fontFamily="@font/nanumgothic"
+                android:text="국가"
+                android:layout_marginLeft="2dp"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/entry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:text="입장"
+            android:textStyle="bold"
+            android:layout_margin="3dp"
+            android:layout_alignParentRight="true"/>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+</LinearLayout>
+
+
+
+

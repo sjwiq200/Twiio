@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- Layout Definition : Layout 충첩 및 ETC -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:orientation="vertical"
+    android:background="@color/colorBackGround"
+        >
+<!-- Layout Definition : Layout 충첩 및 ETC -->
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scheduleListRelat"
+        android:background="@drawable/border">
+
+        <TextView
+            android:id = "@+id/scheduleDateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nanumgothic"
+            android:text="2018-02-28"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="RtlCompat"
+            android:padding="2dp"
+            android:background="@color/color_gray"/>
+
+        <TextView
+            android:id = "@+id/scheduleTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="35dp"
+            android:fontFamily="@font/nanumgothic"
+            android:text="일정제목"
+            android:layout_below="@id/scheduleDateText"
+            android:textSize="20dp"
+            tools:ignore="RtlCompat" />
+
+        <RelativeLayout
+            android:id="@+id/scheduleListRelat2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scheduleTitleText"
+            >
+
+            <ImageView
+                android:id="@+id/schedulelocationImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/schedulelocationText"
+                android:layout_toStartOf="@+id/schedulelocationText"
+                android:src="@drawable/map"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/schedulelocationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nanumgothic"
+                android:text="주소"
+                android:textSize="15dp" />
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+
+
+</LinearLayout>
+
+
+
+

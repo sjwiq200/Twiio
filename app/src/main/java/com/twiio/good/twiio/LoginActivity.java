@@ -26,6 +26,8 @@ public class LoginActivity extends AppCompatActivity{
     LoginThread loginThread;
     Button mypage;
     Button twiiChat;
+    Button twiiBook;
+
     private Handler handler =  new Handler() {
         public void handleMessage(Message message) {
             if (message.what == 100) {
@@ -58,6 +60,7 @@ public class LoginActivity extends AppCompatActivity{
         userIdText = (TextView)findViewById(R.id.userIdText);
         mypage = (Button)findViewById(R.id.mypage);
         twiiChat = (Button)findViewById(R.id.twiiChat);
+        twiiBook = (Button)findViewById(R.id.twiiBook);
 
         //===========================Intent===========================
 
@@ -90,7 +93,17 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        }
+        //===========================TwiiBook Click Event===========================
+        twiiBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentTwiiBook = new Intent(LoginActivity.this, ListMainPlanActivity.class);
+                intentTwiiBook.putExtra("userId", userId);
+                startActivity(intentTwiiBook);
+            }
+        });
+
+        }//END onCreate
 
     protected void onDestroy(){
         super.onDestroy();

@@ -24,6 +24,11 @@
             </intent-filter>
         </service>
 
+        <!--Kakao Login-->
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -48,6 +53,11 @@
 
         <!--Schedule Activity-->
         <activity android:name=".ListScheduleActivity"/>
+
+        <activity android:name=".ListMainPlanActivity"/>
+        <activity android:name=".AddMainPlanActivity"/>
+        <activity android:name=".ListDailyPlanActivity"/>
+        <activity android:name=".DailyPlanActivity"/>
     </application>
     <!--Internet Permission-->
     <uses-permission android:name="android.permission.INTERNET"/>

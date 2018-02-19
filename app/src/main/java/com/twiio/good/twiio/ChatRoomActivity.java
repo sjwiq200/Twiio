@@ -67,14 +67,14 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 
 //    String userAvatar = "http://192.168.0.29:8080/resources/images/room/";
-//    String userAvatar = "http://192.0.0.9:8080/resources/images/room/";
-    String userAvatar = "http://172.30.1.37:8080/resources/images/room/";
-//    String url = "http://192.168.0.29:8282/#/v1/";
+    String userAvatar = "http://192.0.0.73:8080/resources/images/room/";
+//    String userAvatar = "http://172.30.1.37:8080/resources/images/room/";
+    String url = "http://192.168.0.73:8282/#/v1/";
 //    String url = "http://192.168.0.9:8282/#/v1/";
-    String url = "http://172.30.1.37:8282/#/v1/";
+//    String url = "http://172.30.1.37:8282/#/v1/";
 
-//    String imageUrl = "http://192.168.0.9:8282/app/upload/images/";
-    String imageUrl = "http://172.30.1.37:8282/app/upload/images/";
+    String imageUrl = "http://192.168.0.73:8282/app/upload/images/";
+//    String imageUrl = "http://172.30.1.37:8282/app/upload/images/";
 
     private Socket socket;
 

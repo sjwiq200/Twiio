@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Twiio</string>
+    <string name="kakao_app_key">1b77271e4594165cefcc146bc7ade001</string>
 </resources>

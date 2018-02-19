@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intentListMyRoom = new Intent(ChatActivity.this,ListMyRoomActivity.class);
                 intentListMyRoom.putExtra("userId",userId);
+                intentListMyRoom.putExtra("userNo",userNo);
                 startActivity(intentListMyRoom);
 
             }
