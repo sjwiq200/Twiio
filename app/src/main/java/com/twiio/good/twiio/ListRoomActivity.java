@@ -103,6 +103,7 @@ public class ListRoomActivity extends AppCompatActivity {
               insertLinearLayout.setGravity(Gravity.CENTER);
           }//END For Loof
           scrollView.addView(insertLinearLayout);
+
           //===========================Scroll View Listener===========================
           scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
               @Override
@@ -119,7 +120,7 @@ public class ListRoomActivity extends AppCompatActivity {
                   }
 
               }
-          });
+          });//END ScrollChangeListener
 
 
 

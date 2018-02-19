@@ -9,44 +9,51 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.twiio.good.twiio.common.Search;
 import com.twiio.good.twiio.domain.Room;
 import com.twiio.good.twiio.thread.ListMyRoomThread;
+import com.twiio.good.twiio.thread.ListRoomThread;
 
 import java.util.List;
 
 public class ListMyRoomActivity extends AppCompatActivity {
 
-    ListMyRoomThread listMyRoomThread;
-    int userNo;
     String userId;
+    int userNo;
+
+    Button searchButton;
+    Spinner searchCondition;
+    EditText searchKeyword;
+    ListMyRoomThread listMyRoomThread;
+
+    Search search;
+
+    private int page = 1;
+
+    private ScrollView scrollView;
+    private LinearLayout insertLinearLayout;
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
 
-            /*
             List<Room> list = (List<Room>)message.obj;
-            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListMyRoomActivity.this,R.layout.activity_inflatelist,null); //new Layout
-            ScrollView scrollView = (ScrollView)findViewById(R.id.listRoomScroll);
-            for(Room room : list){
-                TextView textView = new TextView(ListMyRoomActivity.this);
-                textView.setText("roomName = "+room.getRoomName()+"Country = " + room.getCountry());
 
-                insertLinearLayout.addView(textView);
+            if(page == 1){
+                insertLinearLayout = (LinearLayout)View.inflate(ListMyRoomActivity.this, R.layout.activity_inflatelist,null); //new Layout
+            }else{
+                scrollView.removeAllViews();
             }
-            insertLinearLayout.setGravity(Gravity.CENTER);
-            scrollView.addView(insertLinearLayout);
-            */
-
-            List<Room> list = (List<Room>)message.obj;
-            ScrollView scrollView = (ScrollView)findViewById(R.id.listRoomScroll);
-            LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ListMyRoomActivity.this, R.layout.activity_inflatelist,null); //new Layout
+//            ScrollView scrollView = (ScrollView)findViewById(R.id.listRoomScroll);
+//            LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ListMyRoomActivity.this, R.layout.activity_inflatelist,null); //new Layout
 
             for(final Room room : list){
                 LinearLayout customLinearLayout = (LinearLayout)View.inflate(ListMyRoomActivity.this, R.layout.activity_custom_inflate_chat,null); //new Layout
@@ -94,6 +101,24 @@ public class ListMyRoomActivity extends AppCompatActivity {
             }
             scrollView.addView(insertLinearLayout);
 
+            //===========================Scroll View Listener===========================
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+
+                    int bottom = scrollView.getChildAt(0).getBottom() - (scrollView.getHeight() + scrollView.getScrollY() );
+
+                    if(bottom == 0 && ( insertLinearLayout.getChildCount() )%13 == 0){
+                        System.out.println("test ENDLESS Scroll");
+                        page++;
+                        search.setCurrentPage(page);
+                        listMyRoomThread = new ListMyRoomThread(handler, userId, search);
+                        listMyRoomThread.start();
+                    }
+
+                }
+            });//END ScrollChangeListener
+
 
         }
     };
@@ -103,14 +128,49 @@ public class ListMyRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listroom);
 
+        //===========================Layout===========================
+        searchButton = (Button)findViewById(R.id.searchButton);
+        searchCondition = (Spinner)findViewById(R.id.roomSearchCondition);
+        searchKeyword = (EditText)findViewById(R.id.roomSearchKeyword);
+
+        scrollView = (ScrollView)findViewById(R.id.listRoomScroll);
+
         //===========================Intent===========================
         Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
         userNo = intent.getIntExtra("userNo",0);
 
         //===========================Thread Start===========================
-        listMyRoomThread = new ListMyRoomThread(handler,userId);
+        search = new Search();
+        listMyRoomThread = new ListMyRoomThread(handler,userId, search);
         listMyRoomThread.start();
+
+        //===========================SearchButton Event===========================
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(ListMyRoomActivity.this, "searchConditon : "+searchCondition.getSelectedItem()+", searchKeyword: "+searchKeyword.getText(),Toast.LENGTH_SHORT).show();
+                scrollView.removeAllViews();
+                page = 1;
+                search.setCurrentPage(page);
+
+                if(searchCondition.getSelectedItem().equals("roomTitle")){
+                    search.setSearchCondition("0");
+                }
+                else if(searchCondition.getSelectedItem().equals("Country")){
+                    search.setSearchCondition("1");
+                }else{
+                    search.setSearchCondition("2");
+                }
+
+                search.setSearchKeyword(searchKeyword.getText().toString());
+
+                listMyRoomThread = new ListMyRoomThread(handler, userId, search);
+                listMyRoomThread.start();
+
+            }
+        });
 
 
     }

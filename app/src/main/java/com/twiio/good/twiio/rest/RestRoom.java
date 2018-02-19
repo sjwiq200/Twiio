@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.twiio.good.twiio.common.Search;
 import com.twiio.good.twiio.domain.Room;
+import com.twiio.good.twiio.domain.RoomUser;
 import com.twiio.good.twiio.domain.User;
 
 import org.apache.http.HttpEntity;
@@ -32,10 +33,38 @@ import java.util.Vector;
 public class RestRoom {
 
 //    String fixUrl = "http://192.168.0.29:8080/room/json/";
-    String fixUrl = "http://192.168.0.45:8080/room/json/";
+    String fixUrl = "http://192.168.0.33:8080/room/json/";
 //    String fixUrl = "http://172.30.1.37:8080/room/json/";
 
     public RestRoom() {
+    }
+
+    public void addRoomUser(int userNo, String roomKey) throws Exception{
+
+        System.out.println(this.getClass()+".addRoomUser()");
+        RoomUser roomUser = new RoomUser();
+        roomUser.setRoomKey(roomKey);
+        roomUser.setUserNo(userNo);
+
+        HttpClient httpClient = new DefaultHttpClient();
+        String url = fixUrl+"addRoomUser";
+
+        // POST request
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setHeader("Content-Type", "application/json");
+
+        System.out.println("roomUser ==> " + roomUser);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String jsonValue = objectMapper.writeValueAsString(roomUser);
+        HttpEntity httpEntity = new StringEntity(jsonValue,"utf-8");
+
+        httpPost.setEntity(httpEntity);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+
+        System.out.println("response ==>" +httpResponse);
     }
 
     public List<Room> listRoom(Search search) throws Exception{

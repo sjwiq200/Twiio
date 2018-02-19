@@ -27,9 +27,11 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Ack;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Picasso;
+import com.twiio.good.twiio.thread.AddRoomUserThread;
 import com.twiio.good.twiio.thread.SendImageThread;
 
 import org.apache.http.entity.ContentType;
@@ -52,11 +54,20 @@ public class ChatRoomActivity extends AppCompatActivity {
     int master;
     Button imageButton;
 
+    String token;
+
     EditText editTextMessage;
     Button sendButton;
     ScrollView scrollView;
 
     SendImageThread sendImageThread;
+    AddRoomUserThread addRoomUserThread;
+
+    private  Handler handler = new Handler(){
+        public void HandleMessage(Message message){
+
+        }
+    };
     private Handler handlerSend = new Handler(){
         public void HandleMessage(Message message){
             if(message.what ==200){
@@ -67,13 +78,13 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 
 //    String userAvatar = "http://192.168.0.29:8080/resources/images/room/";
-    String userAvatar = "http://192.0.0.45:8080/resources/images/room/";
+    String userAvatar = "http://192.0.0.33:8080/resources/images/room/";
 //    String userAvatar = "http://172.30.1.37:8080/resources/images/room/";
-    String url = "http://192.168.0.45:8282/#/v1/";
+    String url = "http://192.168.0.33:8282/#/v1/";
 //    String url = "http://192.168.0.9:8282/#/v1/";
 //    String url = "http://172.30.1.37:8282/#/v1/";
 
-    String imageUrl = "http://192.168.0.45:8282/app/upload/images/";
+    String imageUrl = "http://192.168.0.33:8282/app/upload/images/";
 //    String imageUrl = "http://172.30.1.37:8282/app/upload/images/";
 
     private Socket socket;
@@ -109,6 +120,12 @@ public class ChatRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
 
+        //===========================FCM Test===========================
+        token = FirebaseInstanceId.getInstance().getToken();
+        System.out.println("Token value ==> "+token);
+
+
+
         //===========================Layout===========================
         editTextMessage = (EditText)findViewById(R.id.edittext_message);
         sendButton = (Button)findViewById(R.id.send_button);
@@ -121,6 +138,10 @@ public class ChatRoomActivity extends AppCompatActivity {
         roomKey = intent.getStringExtra("roomKey");
         userNo = intent.getIntExtra("userNo",0);
         master = intent.getIntExtra("master",0);
+
+        //===========================Thread===========================
+        addRoomUserThread = new AddRoomUserThread(handler, userNo, roomKey);
+        addRoomUserThread.start();
 
         //===========================GET Permission ===========================
         //API 23 이상부터 manifests 말고 런타임시 Permission을 획득해야 함
@@ -140,6 +161,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             jsonObject.put("userAvatar",userAvatar+"Avatar1.jpg");
             jsonObject.put("roomKey",roomKey);
             jsonObject.put("userNo",userNo);
+            jsonObject.put("fcmToken", token);
 
             //===========================new user Emit===========================
             socket.emit("new user", jsonObject, new Ack() {

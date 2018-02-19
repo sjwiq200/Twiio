@@ -49,11 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //FCM Test
-
-        String token = FirebaseInstanceId.getInstance().getToken();
-        System.out.println("Token value ==> "+token);
-
     }//END onCreate
 
     @Override
