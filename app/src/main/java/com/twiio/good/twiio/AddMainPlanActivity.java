@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -53,6 +54,9 @@ public class AddMainPlanActivity extends AppCompatActivity {
     private static final int OPEN_CAMERA=1;
     private static final int OPEN_GALLERY=0;
     private Uri imageUri;
+
+    private String currentPhotoPath;//실제 사진 파일 경로
+    String imageCaptureName;//이미지 이름
 
     String userId;
     boolean flag;
@@ -175,8 +179,8 @@ public class AddMainPlanActivity extends AppCompatActivity {
         mainThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //final String[] str ={"갤러리","카메라"};
-                final String[] str ={"갤러리"};
+                final String[] str ={"갤러리","카메라"};
+                //final String[] str ={"갤러리"};
                 new AlertDialog.Builder(AddMainPlanActivity.this)
                         .setTitle("이미지 선택")
                         .setNegativeButton("취소",null)
@@ -207,9 +211,32 @@ public class AddMainPlanActivity extends AppCompatActivity {
 
     //===========================open Camera===========================
     private void openCamera(){
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//
+//        startActivityForResult(cameraIntent,OPEN_CAMERA);
 
-        startActivityForResult(cameraIntent,OPEN_CAMERA);
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+
+                }
+                if (photoFile != null) {
+                    imageUri = Uri.fromFile(photoFile);
+                    System.out.println("openCamear imageUri :: "+imageUri);
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    System.out.println("cameraIntent :: "+cameraIntent);
+                    startActivityForResult(cameraIntent, OPEN_CAMERA);
+                }
+            }
+
+        }
+
+
     }
 
     //===========================open Gallery===========================
@@ -262,6 +289,31 @@ public class AddMainPlanActivity extends AppCompatActivity {
         mainThumbnail.setImageBitmap(rotate(bitmap, exifDegree));
     }
 
+    private void getPictureForPhoto(Uri imageUri) {
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(currentPhotoPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int exifOrientation;
+        int exifDegree;
+
+        if (exif != null) {
+            exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            exifDegree = exifOrientationToDegree(exifOrientation);
+        } else {
+            exifDegree = 0;
+        }
+
+        System.out.println("currentPhotoPath :: "+currentPhotoPath);
+        imagePath=currentPhotoPath;
+        fileName = imagePath.substring(imagePath.lastIndexOf("/")+1);
+        System.out.println("imagePath :: "+imagePath);
+        mainThumbnail.setImageBitmap(rotate(bitmap, exifDegree));//이미지 뷰에 비트맵 넣기
+    }
+
     //========================set imageOrientation=================
     private int exifOrientationToDegree(int exifOrientation){
         if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90){
@@ -300,6 +352,24 @@ public class AddMainPlanActivity extends AppCompatActivity {
         return imgPath;
     }
 
+    private File createImageFile() throws IOException {
+        String fileName = "tmp_"+String.valueOf(System.currentTimeMillis())+".jpg";
+//        File dir = new File(Environment.getExternalStorageDirectory() + "/path/");
+//        if (!dir.exists()) {
+//            dir.mkdirs();
+//        }
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        imageCaptureName = timeStamp + ".png";
+//
+//        File storageDir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + "/path/"+ imageCaptureName);
+
+        File storageDir = new File(Environment.getExternalStorageDirectory(),fileName);
+        currentPhotoPath = storageDir.getAbsolutePath();
+
+        return storageDir;
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -307,12 +377,17 @@ public class AddMainPlanActivity extends AppCompatActivity {
         switch (requestCode){
             case OPEN_GALLERY:
             {
-                imageUri = data.getData();
-                sendPicture(imageUri);
+                if(data!=null){
+                    imageUri = data.getData();
+                    sendPicture(imageUri);
+                }
+                break;
             }
             case OPEN_CAMERA:
             {
-
+                //imageUri = data.getData();
+                getPictureForPhoto(imageUri);
+                break;
             }
         }
     }
