@@ -218,6 +218,7 @@ public class ChatRoomActivity extends AppCompatActivity {
                         jsonObject.put("hasFile",false);
                         jsonObject.put("msgTime",formatAMPM(new Date()));
                         jsonObject.put("roomKey",roomKey);
+                        jsonObject.put("userNo", userNo);
                         System.out.println("jsonObejct22222 ==>" + jsonObject);
                         //===========================send-message Emit===========================
                         socket.emit("send-message", jsonObject, new Ack() {

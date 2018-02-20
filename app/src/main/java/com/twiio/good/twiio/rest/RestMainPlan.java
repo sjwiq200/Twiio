@@ -35,7 +35,7 @@ import java.util.List;
 public class RestMainPlan {
 
     String fixUrl = "http://192.168.0.33:8080/mainplan/json/";
-    private String urlThumbnail = "http://192.168.0.45:8080/mainplan/json/uploadImage/";
+    private String urlThumbnail = "http://192.168.0.33:8080/mainplan/json/uploadImage/";
 
     public RestMainPlan() {
     }
