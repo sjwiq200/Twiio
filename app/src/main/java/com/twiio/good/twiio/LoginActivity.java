@@ -78,9 +78,10 @@ public class LoginActivity extends AppCompatActivity{
         mypage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentMypage = new Intent(LoginActivity.this,MypageActivity.class);
+                Intent intentMypage = new Intent(LoginActivity.this,GetUserActivity.class);
                 intentMypage.putExtra("userId",userId);
                 startActivity(intentMypage);
+
             }
         });
         //===========================TwiiChat Click Event===========================

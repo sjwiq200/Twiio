@@ -7,7 +7,7 @@
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
     android:paddingTop="20dp"
-    android:background="@color/colorBackGround">
+    android:background="@drawable/chatmain">
 
 
     <TextView
@@ -25,6 +25,7 @@
         android:layout_gravity="left"
         android:layout_marginLeft="45dp"
         android:layout_marginTop="50dp"
+
         >
 
 
@@ -43,7 +44,7 @@
             android:textStyle="bold"
             android:textSize="25dp"
             android:layout_width="250dp"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"
             android:textAlignment="center"
@@ -66,7 +67,7 @@
             android:layout_marginLeft="50dp"
             android:textStyle="bold"
             android:layout_width="250dp"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:textSize="25dp"
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"
@@ -90,7 +91,7 @@
             android:layout_marginLeft="50dp"
             android:textStyle="bold"
             android:layout_width="250dp"
-            android:layout_height="45dp"
+            android:layout_height="40dp"
             android:textSize="25dp"
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"

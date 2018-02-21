@@ -7,12 +7,13 @@ import java.sql.Date;
 /**
  * Created by bitcamp on 2018-02-14.
  */
-
 public class PlanContent {
     public PlanContent() {
         // TODO Auto-generated constructor stub
     }
-
+    /****************eunae******************************/
+    @JsonIgnore
+    /*************************************************/
     private int contentNo;
     private DailyPlan dailyPlan;
     private Scrap scrap;
@@ -36,6 +37,10 @@ public class PlanContent {
     @JsonIgnore
     private String uploadFile;
     private int contentType;
+    /****************eunae******************************/
+    @JsonIgnore
+    private String resultForMobile;
+    /*************************************************/
 
     public int getContentNo() {
         return contentNo;
@@ -204,6 +209,19 @@ public class PlanContent {
     public void setMapType(String mapType) {
         this.mapType = mapType;
     }
+
+    /****************eunae******************************/
+
+    public String getResultForMobile() {
+        return resultForMobile;
+    }
+
+    public void setResultForMobile(String resultForMobile) {
+        this.resultForMobile = resultForMobile;
+    }
+
+    /****************eunae******************************/
+
 
     @Override
     public String toString() {

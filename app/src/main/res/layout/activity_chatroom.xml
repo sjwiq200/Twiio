@@ -7,7 +7,7 @@
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
     android:paddingTop="50dp"
-    android:background="@drawable/main_pic">
+    android:background="@drawable/chatmain">
 
     <!-- Layout Definition : Layout 충첩 및 ETC -->
     <ScrollView

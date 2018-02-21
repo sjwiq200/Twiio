@@ -11,7 +11,7 @@
                 android:width="2dp"
                 android:color="@color/color_white" />
 
-            <solid android:color="@color/colorBackGround" />
+            <solid android:color="@color/main_color" />
         </shape>
     </item>
 

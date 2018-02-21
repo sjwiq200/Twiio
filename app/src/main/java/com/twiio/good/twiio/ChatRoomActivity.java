@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -78,7 +79,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 
 
 //    String userAvatar = "http://192.168.0.29:8080/resources/images/room/";
-    String userAvatar = "http://192.0.0.33:8080/resources/images/room/";
+    String userAvatar = "http://192.0.0.33:8080/resources/images/userimages/";
 //    String userAvatar = "http://172.30.1.37:8080/resources/images/room/";
     String url = "http://192.168.0.33:8282/#/v1/";
 //    String url = "http://192.168.0.9:8282/#/v1/";
@@ -158,7 +159,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             socket.connect();
             final JSONObject jsonObject = new JSONObject();
             jsonObject.put("userName",userId);
-            jsonObject.put("userAvatar",userAvatar+"Avatar1.jpg");
+            jsonObject.put("userAvatar",userAvatar+userId+".jpg");
             jsonObject.put("roomKey",roomKey);
             jsonObject.put("userNo",userNo);
             jsonObject.put("fcmToken", token);
@@ -311,35 +312,78 @@ public class ChatRoomActivity extends AppCompatActivity {
 
                     */
 
-                    TextView textView = new TextView(ChatRoomActivity.this);
-                    ViewGroup.LayoutParams width = null;
-                    Drawable drawableTo = getResources().getDrawable(
-                            R.drawable.rounded_edittext2);
-                    Drawable drawableFrom = getResources().getDrawable(
-                            R.drawable.rounded_edittext);
-                    try{
-                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
-                        if(response.get("userName").toString().equals(userId)){
-                            textView.setText(response.get("msg")+" ");
-                            textView.setBackground(drawableTo);
-                            textView.setTextSize(20);
-                            width = new ViewGroup.LayoutParams((("  "+response.get("msg")+" ").length()*55)/2, 90);
-                            insertLinearLayout.setGravity(Gravity.RIGHT);
-                            insertLinearLayout.setPadding(10,10,10, 0);
+//                    TextView textView = new TextView(ChatRoomActivity.this);
+//                    ViewGroup.LayoutParams width = null;
+//                    Drawable drawableTo = getResources().getDrawable(
+//                            R.drawable.rounded_edittext2);
+//                    Drawable drawableFrom = getResources().getDrawable(
+//                            R.drawable.rounded_edittext);
+//                    try{
+//                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
+//                        if(response.get("userName").toString().equals(userId)){
+//                            textView.setText(response.get("msg")+" ");
+//                            textView.setBackground(drawableTo);
+//                            textView.setTextSize(20);
+//                            width = new ViewGroup.LayoutParams((("  "+response.get("msg")+" ").length()*55)/2, 90);
+//                            insertLinearLayout.setGravity(Gravity.RIGHT);
+//                            insertLinearLayout.setPadding(10,10,10, 0);
+//                            textView.setGravity(Gravity.RIGHT);
+//
+//
+//                        }
+//                        else{
+//                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
+//                            textView.setBackground(drawableFrom);
+//                            textView.setTextSize(20);
+//                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
+//                            insertLinearLayout.setGravity(Gravity.LEFT);
+//                            insertLinearLayout.setPadding(10,10,10, 0);
+//                            textView.setGravity(Gravity.LEFT);
+//                        }
+//                        insertLinearLayout.addView(textView, width);
+//                        linearLayout.addView(insertLinearLayout);
+//                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                    }
+
+
+                    try {
+                        // textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
+                        if (response.get("userName").toString().equals(userId)) {
+                            LinearLayout customLinear = (LinearLayout) View.inflate(ChatRoomActivity.this, R.layout.activity_custom_inflate_chatto, null);
+                            RelativeLayout relativeLayout = (RelativeLayout) customLinear.findViewById(R.id.chatFromRelat);
+                            TextView textView = (TextView) customLinear.findViewById(R.id.chatText);
+                            textView.setText(response.get("msg") + " ");
                             textView.setGravity(Gravity.RIGHT);
+                            textView.setPadding(15, 10, 15, 10);
+                            ((ViewGroup) textView.getParent()).removeView(textView);
+                            ((ViewGroup) relativeLayout.getParent()).removeView(relativeLayout);
+                            relativeLayout.addView(textView);
+                            insertLinearLayout.addView(relativeLayout);
 
+                            insertLinearLayout.setGravity(Gravity.RIGHT);
 
-                        }
-                        else{
-                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
-                            textView.setBackground(drawableFrom);
-                            textView.setTextSize(20);
-                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
+                        } else {
+                            LinearLayout customLinear = (LinearLayout) View.inflate(ChatRoomActivity.this, R.layout.activity_custom_inflate_chatfrom, null);
+                            TextView fromId = (TextView) customLinear.findViewById(R.id.fromId);
+                            TextView chatText = (TextView) customLinear.findViewById(R.id.chatText);
+                            RelativeLayout relativeLayout = (RelativeLayout) customLinear.findViewById(R.id.chatFromRelat);
+
+                            System.out.println("상대방" + response.get("msg") + "");
+                            chatText.setText(response.get("msg") + "");
+                            chatText.setPadding(15, 10, 15, 10);
+                            fromId.setText(response.get("userName") + "");
+                            fromId.setGravity(Gravity.LEFT);
+
+                            ((ViewGroup) fromId.getParent()).removeView(fromId);
+                            ((ViewGroup) chatText.getParent()).removeView(chatText);
+                            ((ViewGroup) relativeLayout.getParent()).removeView(relativeLayout);
+                            relativeLayout.addView(fromId);
+
+                            relativeLayout.addView(chatText);
+                            relativeLayout.setGravity(Gravity.LEFT);
+                            insertLinearLayout.addView(relativeLayout);
                             insertLinearLayout.setGravity(Gravity.LEFT);
-                            insertLinearLayout.setPadding(10,10,10, 0);
-                            textView.setGravity(Gravity.LEFT);
                         }
-                        insertLinearLayout.addView(textView, width);
                         linearLayout.addView(insertLinearLayout);
                         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                     }
@@ -375,33 +419,80 @@ public class ChatRoomActivity extends AppCompatActivity {
                             LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ChatRoomActivity.this, R.layout.activity_inflatechat, null); //new Layout
                             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.chatRoomMessage);
 
+//                            if(jsonObjectResponse.get("hasFile").toString().equals("false")){
+//                                TextView textView = new TextView(ChatRoomActivity.this);
+//                                ViewGroup.LayoutParams width = null;
+//                                Drawable drawableTo = getResources().getDrawable(R.drawable.rounded_edittext2);
+//                                Drawable drawableFrom = getResources().getDrawable(R.drawable.rounded_edittext);
+//                                textView.setText("  "+jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg"));
+//
+//                                if(jsonObjectResponse.get("userName").toString().equals(userId)){
+//                                    textView.setText(jsonObjectResponse.get("msg")+" ");
+//                                    textView.setBackground(drawableTo);
+//                                    textView.setTextSize(20);
+//                                    width = new ViewGroup.LayoutParams((("  "+jsonObjectResponse.get("msg")+" ").length()*55)/2, 90);
+//                                    insertLinearLayout.setGravity(Gravity.RIGHT);
+//                                    insertLinearLayout.setPadding(10,10,10, 0);
+//                                    textView.setGravity(Gravity.RIGHT);
+//                                }
+//                                else{
+//                                    textView.setWidth((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length());
+//                                    textView.setBackground(drawableFrom);
+//                                    textView.setTextSize(20);
+//                                    width = new ViewGroup.LayoutParams(((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length()*55)/2, 90);
+//                                    insertLinearLayout.setGravity(Gravity.LEFT);
+//                                    insertLinearLayout.setPadding(10,10,10, 0);
+//                                    textView.setGravity(Gravity.LEFT);
+//                                }
+//
+//                                insertLinearLayout.addView(textView, width);
+//                                linearLayout.addView(insertLinearLayout);
+//                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
                             if(jsonObjectResponse.get("hasFile").toString().equals("false")){
-                                TextView textView = new TextView(ChatRoomActivity.this);
-                                ViewGroup.LayoutParams width = null;
-                                Drawable drawableTo = getResources().getDrawable(R.drawable.rounded_edittext2);
-                                Drawable drawableFrom = getResources().getDrawable(R.drawable.rounded_edittext);
-                                textView.setText("  "+jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg"));
 
                                 if(jsonObjectResponse.get("userName").toString().equals(userId)){
+
+
+                                    LinearLayout customLinear = (LinearLayout)View.inflate(ChatRoomActivity.this, R.layout.activity_custom_inflate_chatto,null);
+                                    RelativeLayout relativeLayout = (RelativeLayout)customLinear.findViewById(R.id.chatFromRelat);
+                                    TextView textView = (TextView)customLinear.findViewById(R.id.chatText);
                                     textView.setText(jsonObjectResponse.get("msg")+" ");
-                                    textView.setBackground(drawableTo);
-                                    textView.setTextSize(20);
-                                    width = new ViewGroup.LayoutParams((("  "+jsonObjectResponse.get("msg")+" ").length()*55)/2, 90);
-                                    insertLinearLayout.setGravity(Gravity.RIGHT);
-                                    insertLinearLayout.setPadding(10,10,10, 0);
                                     textView.setGravity(Gravity.RIGHT);
+                                    textView.setPadding(15,10,15,10);
+                                    ((ViewGroup)textView.getParent()).removeView(textView);
+                                    ((ViewGroup)relativeLayout.getParent()).removeView(relativeLayout);
+                                    relativeLayout.addView(textView);
+                                    insertLinearLayout.addView(relativeLayout);
+
+                                    insertLinearLayout.setGravity(Gravity.RIGHT);
+                                    /**************************************************************************************************************/
+
                                 }
                                 else{
-                                    textView.setWidth((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length());
-                                    textView.setBackground(drawableFrom);
-                                    textView.setTextSize(20);
-                                    width = new ViewGroup.LayoutParams(((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length()*55)/2, 90);
+
+                                    /***********************************eunae**********************************************/
+                                    LinearLayout customLinear = (LinearLayout)View.inflate(ChatRoomActivity.this, R.layout.activity_custom_inflate_chatfrom,null);
+                                    TextView fromId = (TextView)customLinear.findViewById(R.id.fromId);
+                                    TextView chatText = (TextView)customLinear.findViewById(R.id.chatText);
+                                    RelativeLayout relativeLayout = (RelativeLayout)customLinear.findViewById(R.id.chatFromRelat);
+
+                                    chatText.setText(jsonObjectResponse.get("msg")+"");
+                                    chatText.setPadding(15,10,15,10);
+                                    fromId.setText(jsonObjectResponse.get("userName")+"");
+                                    fromId.setGravity(Gravity.LEFT);
+
+                                    ((ViewGroup)fromId.getParent()).removeView(fromId);
+                                    ((ViewGroup)chatText.getParent()).removeView(chatText);
+                                    ((ViewGroup)relativeLayout.getParent()).removeView(relativeLayout);
+                                    relativeLayout.addView(fromId);
+
+                                    relativeLayout.addView(chatText);
+                                    relativeLayout.setGravity(Gravity.LEFT);
+                                    insertLinearLayout.addView(relativeLayout);
                                     insertLinearLayout.setGravity(Gravity.LEFT);
-                                    insertLinearLayout.setPadding(10,10,10, 0);
-                                    textView.setGravity(Gravity.LEFT);
                                 }
 
-                                insertLinearLayout.addView(textView, width);
                                 linearLayout.addView(insertLinearLayout);
                                 scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                             }//END hasFile is False

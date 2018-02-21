@@ -25,4 +25,5 @@
     <color name="color_transparent_cyan">#80005656</color>
     <color name="color_magenta">#a322a3</color>
     <color name="color_transparent_magenta">#710171</color>
+    <color name="main_color">#79B1D0</color>
 </resources>

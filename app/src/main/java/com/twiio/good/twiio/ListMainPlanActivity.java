@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.twiio.good.twiio.domain.MainPlan;
 import com.twiio.good.twiio.thread.ListMainPlanThread;
 
@@ -30,6 +31,9 @@ public class ListMainPlanActivity extends AppCompatActivity {
     String userId;
 
     Button addMainPlan;
+    //========================daeun editing-===================================
+    String imageUrl = "http://192.168.0.35:8080/resources/images/thumbnail_plan/";
+    //=========================================================================
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
@@ -89,6 +93,16 @@ public class ListMainPlanActivity extends AppCompatActivity {
                 city.setText(mainPlan.getCity());
                 //imageView.setImageURI(mainPlan.getMainThumbnail());
                 System.out.println("썸네일:::"+mainPlan.getMainThumbnail());
+
+                //=================================daeun editing=============================
+                if(mainPlan.getMainThumbnail()!=null){
+                    /////////////////*dayoung add for imageView-picasso<START> *////////////////
+                    System.out.println("들어오니" + mainPlan.getMainThumbnail());
+                    Picasso.with(ListMainPlanActivity.this).load(imageUrl+mainPlan.getMainThumbnail()).into(imageView);
+                    //////////////*dayoung add for imageView-picasso<END> *////////////////
+                }
+                //=================================daeun editing=============================
+
                 System.out.println("나라나라:::"+mainPlan.getCountry());
 
                 //Button Dynamic Click Event
@@ -108,6 +122,12 @@ public class ListMainPlanActivity extends AppCompatActivity {
                 ((ViewGroup)date.getParent()).removeView(date);
                 ((ViewGroup)country.getParent()).removeView(country);
                 ((ViewGroup)city.getParent()).removeView(city);
+                /////////////////*dayoung add for imageView-picasso<START> */////////////////
+                if((ViewGroup)imageView.getParent() != null) {
+                    ((ViewGroup) imageView.getParent()).removeView(imageView);
+                    relativeLayout.addView(imageView);
+                }
+                /////////////// /*dayoung add for imageView-picasso<END> *//////////////////
                 ((ViewGroup)relativeLayout.getParent()).removeView(relativeLayout);
                 ((ViewGroup)firstLinear.getParent()).removeView(firstLinear);
                 ((ViewGroup)secondLinear.getParent()).removeView(secondLinear);
@@ -117,6 +137,7 @@ public class ListMainPlanActivity extends AppCompatActivity {
                 relativeLayout.addView(date);
                 relativeLayout.addView(country);
                 relativeLayout.addView(city);
+
                 secondLinear.addView(relativeLayout);
                 mainLinear.addView(firstLinear);
                 mainLinear.addView(secondLinear);

@@ -7,25 +7,35 @@
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
     android:paddingTop="50dp"
-    android:alpha="0.7"
-    android:background="@drawable/main_2"
+    android:alpha="0.9"
+    android:background="@drawable/twiiomainandroid"
     >
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TWIIO"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="1dp"
         android:fontFamily="@font/pacifico"
         android:layout_gravity="center"
-        android:textSize="70dp"
+        android:textSize="60dp"
+        android:textColor="@color/color_black"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="여행을 맞이하는 설렘부터"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center"
+        android:textSize="13dp"
         android:textColor="@color/color_black"/>
 
 
     <EditText
         android:id="@+id/idEdit"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:hint="아이디를 입력해주세요."
         android:paddingLeft="15dp"
@@ -34,7 +44,7 @@
     <EditText
         android:id="@+id/passwordEdit"
         android:layout_width="250dp"
-        android:layout_height="40dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
         android:hint="비밀번호를 입력해주세요."
         android:layout_margin="20dp"
@@ -47,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="30dp">
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"

@@ -202,7 +202,7 @@ public class DailyPlanActivity extends AppCompatActivity {
             //DailyPlan dailyPlan = objectMapperResult.readValue(((Map<String, Object>) msg.obj).get("dailyPlan").toString(), new TypeReference<DailyPlan>() {});
 
             List<PlanContent> list = (List<PlanContent>) map.get("list");
-            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(DailyPlanActivity.this,R.layout.activity_inflatelist,null); //new Layout
+            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(DailyPlanActivity.this,R.layout.activity_inflatelist_plan,null); //new Layout
             ScrollView scrollView = (ScrollView)findViewById(R.id.dailyPlanScroll);
 
             mainDay.setText(day);

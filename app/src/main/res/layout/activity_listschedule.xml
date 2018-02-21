@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="2dp"
     android:orientation="vertical"
-    android:background="@color/colorBackGround">
+    android:background="@drawable/chatmain">
 
     <RelativeLayout
         android:layout_width="match_parent"
