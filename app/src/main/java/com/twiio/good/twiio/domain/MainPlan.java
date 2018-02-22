@@ -23,7 +23,6 @@ public class MainPlan {
     private String[] countryList;
     private String city;
     private String planTitle;
-    @JsonIgnore
     private String mainThumbnail;
     private int endClick;
     private String file;

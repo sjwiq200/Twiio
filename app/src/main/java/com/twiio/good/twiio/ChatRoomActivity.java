@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -509,7 +510,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 //                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
 
 
-                                    textView.setText("  "+jsonObjectResponse.get("userName")+" : ");
+                                    textView.setText("  "+jsonObjectResponse.get("userName"));
                                     if(jsonObjectResponse.get("userName").toString().equals(userId)){
                                         imageView.setBackground(drawableTo);
 
@@ -523,7 +524,8 @@ public class ChatRoomActivity extends AppCompatActivity {
                                     else{
 //                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
                                         textView.setWidth((jsonObjectResponse.get("userName")+" : ").length());
-                                        textView.setBackground(drawableFrom);
+                                        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+                                        //textView.setBackground(drawableFrom);
 //                            textView.setTextSize(20);
 //                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
                                         insertLinearLayout.setGravity(Gravity.LEFT);
@@ -575,7 +577,7 @@ public class ChatRoomActivity extends AppCompatActivity {
 //                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
 
 
-                        textView.setText("  "+response.get("userName")+" : ");
+                        textView.setText("  "+response.get("userName"));
                         if(response.get("userName").toString().equals(userId)){
                             imageView.setBackground(drawableTo);
 
@@ -588,12 +590,14 @@ public class ChatRoomActivity extends AppCompatActivity {
                         }
                         else{
 //                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
-                            textView.setWidth((response.get("userName")+" : ").length());
-                            textView.setBackground(drawableFrom);
+                            textView.setWidth((response.get("userName")+"").length());
+                            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                           // textView.setBackground(drawableFrom);
 //                            textView.setTextSize(20);
 //                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
                             insertLinearLayout.setGravity(Gravity.LEFT);
-                            insertLinearLayout.setPadding(10,10,10, 0);
+                            insertLinearLayout.setPadding(10,0,10, 0);
                             textView.setGravity(Gravity.LEFT);
                             insertLinearLayout.addView(textView,200,50);
                             insertLinearLayout.addView(imageView,600,500);

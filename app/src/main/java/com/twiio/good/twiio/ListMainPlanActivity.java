@@ -32,7 +32,7 @@ public class ListMainPlanActivity extends AppCompatActivity {
 
     Button addMainPlan;
     //========================daeun editing-===================================
-    String imageUrl = "http://192.168.0.35:8080/resources/images/thumbnail_plan/";
+    String imageUrl = "http://192.168.0.33:8080/resources/images/thumbnail_plan/";
     //=========================================================================
 
     private Handler handler = new Handler(){
