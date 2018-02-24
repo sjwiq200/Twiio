@@ -14,17 +14,19 @@ public class ChatThread extends Thread{
 
     private Handler handler;
     private String userId;
+    private String url;
     public ChatThread() {
     }
 
-    public ChatThread(Handler handler, String userId){
+    public ChatThread(Handler handler, String userId,String url){
         this.handler = handler;
         this.userId = userId;
+        this.url = url;
     }
 
     public void run(){
         System.out.println(this.getClass()+".run()");
-        RestUser restUser = new RestUser();
+        RestUser restUser = new RestUser(url);
         try{
             Message message = new Message();
             message.what = 200;

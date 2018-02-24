@@ -1,6 +1,7 @@
 package com.twiio.good.twiio;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.User;
 import com.twiio.good.twiio.thread.LoginThread;
+
+import java.util.Properties;
 
 /**
  * Created by JW on 2018. 2. 12..
@@ -24,6 +28,14 @@ public class LoginActivity extends AppCompatActivity{
     String password;
     TextView userIdText;
     LoginThread loginThread;
+
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
+
     Button mypage;
     Button twiiChat;
     Button twiiBook;
@@ -56,6 +68,13 @@ public class LoginActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
+
         //===========================Layout===========================
         userIdText = (TextView)findViewById(R.id.userIdText);
         mypage = (Button)findViewById(R.id.mypage);
@@ -70,7 +89,7 @@ public class LoginActivity extends AppCompatActivity{
 
         //===========================Thread Start===========================
 
-        loginThread = new LoginThread(handler,userId);
+        loginThread = new LoginThread(handler,userId,TWIIOurl);
         loginThread.start();
 
 

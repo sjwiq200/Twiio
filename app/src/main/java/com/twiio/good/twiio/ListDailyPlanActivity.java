@@ -1,5 +1,6 @@
 package com.twiio.good.twiio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.DailyPlan;
 import com.twiio.good.twiio.thread.ListDailyPlanThread;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by bitcamp on 2018-02-14.
@@ -33,46 +36,15 @@ public class ListDailyPlanActivity extends AppCompatActivity {
     int dayNo;
     int day = 1;
 
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
-            //Inflation
-//            Map<String, Object> map = (Map<String, Object>)message.obj;
-//
-//            List<DailyPlan> list = (List<DailyPlan>)map.get("list");
-//            String[] cityList = (String[])map.get("cityList");
-//            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListDailyPlanActivity.this, R.layout.activity_inflatelist,null); //new Layout
-//            ScrollView scrollView = (ScrollView)findViewById(R.id.listDailyPlanScroll);
-//
-//            for(final DailyPlan dailyPlan : list){
-//                //TextView Dynamic Create
-//                TextView textView = new TextView(ListDailyPlanActivity.this);
-//                textView.setText("dailyDate = "+dailyPlan.getDailyDate()+" Country = " + dailyPlan.getDailyCountry()
-//                                    +" city = " + dailyPlan.getDailyCity() + " dailyPlanNo = " + dailyPlan.getDailyPlanNo());
-//
-//                //Button Dynamic Create
-//                Button button = new Button(ListDailyPlanActivity.this);
-//                button.setText("DAY"+dailyPlan.getDay()+" 보기 ::");
-//
-//                //Button Dynamic Click Event
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //Toast.makeText(ListMainPlanActivity.this, mainPlan.getMainPlanNo(), Toast.LENGTH_SHORT).show();
-//                        Intent intentDailyPlan = new Intent(ListDailyPlanActivity.this,DailyPlanActivity.class);
-//                        intentDailyPlan.putExtra("userId", userId);
-//                        intentDailyPlan.putExtra("mainPlanNo", mainPlanNo);
-//                        intentDailyPlan.putExtra("dailyPlanNo", dailyPlan.getDailyPlanNo());
-//
-//                        startActivity(intentDailyPlan);
-//                    }
-//                });
-//
-//                insertLinearLayout.addView(textView);
-//                insertLinearLayout.addView(button);
-//            }
-//            insertLinearLayout.setGravity(Gravity.CENTER);
-//            scrollView.addView(insertLinearLayout);
 
             Map<String, Object> map = (Map<String, Object>)message.obj;
 
@@ -147,6 +119,12 @@ public class ListDailyPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listdailyplan);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
         //===========================Intent===========================
         final Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
@@ -154,7 +132,7 @@ public class ListDailyPlanActivity extends AppCompatActivity {
         //userNo = intent.getIntExtra("userNo",0);
 
         //===========================Thread Start===========================
-        listDailyPlanThread = new ListDailyPlanThread(handler,mainPlanNo);
+        listDailyPlanThread = new ListDailyPlanThread(handler,mainPlanNo,TWIIOurl);
         listDailyPlanThread.start();
 
         //===========================addMainPlan Click Event===========================

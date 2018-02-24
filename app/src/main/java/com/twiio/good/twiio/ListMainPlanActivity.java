@@ -1,5 +1,6 @@
 package com.twiio.good.twiio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +17,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.MainPlan;
 import com.twiio.good.twiio.thread.ListMainPlanThread;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by bitcamp on 2018-02-14.
@@ -31,45 +34,21 @@ public class ListMainPlanActivity extends AppCompatActivity {
     String userId;
 
     Button addMainPlan;
+
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
+
     //========================daeun editing-===================================
-    String imageUrl = "http://192.168.0.33:8080/resources/images/thumbnail_plan/";
+//    String imageUrl = "http://192.168.0.33:8080/resources/images/thumbnail_plan/";
+    String imageUrl;
     //=========================================================================
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
-            //Inflation
-//            List<MainPlan> list = (List<MainPlan>)message.obj;
-//            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListMainPlanActivity.this, R.layout.activity_inflatelist,null); //new Layout
-//            ScrollView scrollView = (ScrollView)findViewById(R.id.listMainPlanScroll);
-//
-//            for(final MainPlan mainPlan : list){
-//                //TextView Dynamic Create
-//                TextView textView = new TextView(ListMainPlanActivity.this);
-//                textView.setText("mainPlanName = "+mainPlan.getPlanTitle()+" Country = " + mainPlan.getCountry()
-//                                    +" tripDate = " + mainPlan.getDepartureDate() + "~" + mainPlan.getArrivalDate());
-//
-//                //Button Dynamic Create
-//                Button button = new Button(ListMainPlanActivity.this);
-//                button.setText(mainPlan.getMainPlanNo()+"보기");
-//
-//                //Button Dynamic Click Event
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        //Toast.makeText(ListMainPlanActivity.this, mainPlan.getMainPlanNo(), Toast.LENGTH_SHORT).show();
-//                        Intent intentMainPlan = new Intent(ListMainPlanActivity.this,ListDailyPlanActivity.class);
-//                        intentMainPlan.putExtra("userId", userId);
-//                        intentMainPlan.putExtra("mainPlanNo", mainPlan.getMainPlanNo());
-//
-//                        startActivity(intentMainPlan);
-//                    }
-//                });
-//
-//                insertLinearLayout.addView(textView);
-//                insertLinearLayout.addView(button);
-//            }
-//            insertLinearLayout.setGravity(Gravity.CENTER);
-//            scrollView.addView(insertLinearLayout);
 
             List<MainPlan> list = (List<MainPlan>)message.obj;
             LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListMainPlanActivity.this, R.layout.activity_inflatelist,null); //new Layout
@@ -159,6 +138,14 @@ public class ListMainPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listmainplan);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
+        imageUrl = TWIIOurl+":8080/resources/images/thumbnail_plan/";
+
         //===========================Layout===========================
         addMainPlan = (Button)findViewById(R.id.addMainPlanButton);
 
@@ -168,7 +155,7 @@ public class ListMainPlanActivity extends AppCompatActivity {
         //userNo = intent.getIntExtra("userNo",0);
 
         //===========================Thread Start===========================
-        listMainPlanThread = new ListMainPlanThread(handler,userId);
+        listMainPlanThread = new ListMainPlanThread(handler,userId,TWIIOurl);
         listMainPlanThread.start();
 
         //===========================addMainPlan Click Event===========================

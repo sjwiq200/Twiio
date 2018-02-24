@@ -15,16 +15,18 @@ public class AddUserThread extends Thread{
 
     private Handler handler;
     private User user;
+    private String url;
     public AddUserThread() {
     }
 
-    public AddUserThread(Handler handler, User user){
+    public AddUserThread(Handler handler, User user,String url){
         this.handler = handler;
         this.user = user;
+        this.url = url;
     }
 
     public void run(){
-        RestUser restUser = new RestUser();
+        RestUser restUser = new RestUser(url);
         System.out.println("AddUserThread.run() ==>" + user);
 
         try{

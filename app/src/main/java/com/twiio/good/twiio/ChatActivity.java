@@ -1,5 +1,6 @@
 package com.twiio.good.twiio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,8 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.User;
 import com.twiio.good.twiio.thread.ChatThread;
+
+import java.util.Properties;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -22,6 +26,12 @@ public class ChatActivity extends AppCompatActivity {
 
     ChatThread chatThread;
 
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
     private Handler handlerUser = new Handler(){
       public void handleMessage(Message message) {
           userNo = ((User)message.obj).getUserNo();
@@ -33,6 +43,12 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
         //===========================Layout===========================
         listRoom = (Button)findViewById(R.id.listRoom);
         listMyRoom = (Button)findViewById(R.id.listMyRoom);
@@ -43,7 +59,7 @@ public class ChatActivity extends AppCompatActivity {
         userId = intent.getStringExtra("userId");
 
         //===========================Thread Start===========================
-        chatThread = new ChatThread(handlerUser, userId);
+        chatThread = new ChatThread(handlerUser, userId, TWIIOurl);
         chatThread.start();
 
         //===========================listRoom Click Event===========================

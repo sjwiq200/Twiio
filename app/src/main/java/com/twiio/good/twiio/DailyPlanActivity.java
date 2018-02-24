@@ -30,6 +30,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.DailyPlan;
 import com.twiio.good.twiio.domain.PlanContent;
 import com.twiio.good.twiio.thread.AddImageThread;
@@ -40,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by bitcamp on 2018-02-14.
@@ -56,8 +58,8 @@ public class DailyPlanActivity extends AppCompatActivity {
     private Button mButton;
     final Context c = this;
     EditText textInput;
-    String imageUrl = "http://192.168.0.33:8080/resources/images/dailyPlanContent/";
-
+//    String imageUrl = "http://192.168.0.54:8080/resources/images/dailyPlanContent/";
+    String imageUrl;
     DailyPlan dailyPlan;
 
     TextView date;
@@ -65,6 +67,12 @@ public class DailyPlanActivity extends AppCompatActivity {
     TextView city;
     TextView mainDay;
     String day;
+
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
 
     //==================================daeun editing====================
     //=========================addImage Button====================
@@ -263,6 +271,14 @@ public class DailyPlanActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_dailyplan);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
+        imageUrl = TWIIOurl+":8080/resources/images/dailyPlanContent/";
+
         //===========================Layout===========================
         date = (TextView)findViewById(R.id.date);
         country = (TextView)findViewById(R.id.country);
@@ -280,7 +296,7 @@ public class DailyPlanActivity extends AppCompatActivity {
         day = intent.getStringExtra("day");
 
         //===========================Thread Start===========================
-        dailyPlanThread = new DailyPlanThread(handler,dailyPlanNo);
+        dailyPlanThread = new DailyPlanThread(handler,dailyPlanNo,TWIIOurl);
         dailyPlanThread.start();
 
     }

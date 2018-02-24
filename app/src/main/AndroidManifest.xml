@@ -28,6 +28,9 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.twiio.ip"
+            android:value="192.168.0.54"/>
 
 
         <activity android:name=".MainActivity">

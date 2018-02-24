@@ -35,7 +35,7 @@
     <EditText
         android:id="@+id/idEdit"
         android:layout_width="250dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:hint="아이디를 입력해주세요."
         android:paddingLeft="15dp"
@@ -44,7 +44,7 @@
     <EditText
         android:id="@+id/passwordEdit"
         android:layout_width="250dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:hint="비밀번호를 입력해주세요."
         android:layout_margin="20dp"

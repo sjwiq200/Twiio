@@ -1,5 +1,6 @@
 package com.twiio.good.twiio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +19,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.common.Search;
 import com.twiio.good.twiio.domain.Room;
 import com.twiio.good.twiio.thread.ListMyRoomThread;
 import com.twiio.good.twiio.thread.ListRoomThread;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ListMyRoomActivity extends AppCompatActivity {
 
@@ -34,6 +37,12 @@ public class ListMyRoomActivity extends AppCompatActivity {
     Spinner searchCondition;
     EditText searchKeyword;
     ListMyRoomThread listMyRoomThread;
+
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
 
     Search search;
 
@@ -46,6 +55,7 @@ public class ListMyRoomActivity extends AppCompatActivity {
         public void handleMessage(Message message){
 
             List<Room> list = (List<Room>)message.obj;
+            System.out.println("List<Room> Size ==> " +list.size());
 
             if(page == 1){
                 insertLinearLayout = (LinearLayout)View.inflate(ListMyRoomActivity.this, R.layout.activity_inflatelist,null); //new Layout
@@ -108,11 +118,13 @@ public class ListMyRoomActivity extends AppCompatActivity {
 
                     int bottom = scrollView.getChildAt(0).getBottom() - (scrollView.getHeight() + scrollView.getScrollY() );
 
-                    if(bottom == 0 && ( insertLinearLayout.getChildCount() )%13 == 0){
+                    if(bottom == 0
+//                            && ( insertLinearLayout.getChildCount() )%13 == 0
+                            ){
                         System.out.println("test ENDLESS Scroll");
                         page++;
                         search.setCurrentPage(page);
-                        listMyRoomThread = new ListMyRoomThread(handler, userId, search);
+                        listMyRoomThread = new ListMyRoomThread(handler, userId, search,TWIIOurl);
                         listMyRoomThread.start();
                     }
 
@@ -128,6 +140,12 @@ public class ListMyRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listroom);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
         //===========================Layout===========================
         searchButton = (Button)findViewById(R.id.searchButton);
         searchCondition = (Spinner)findViewById(R.id.roomSearchCondition);
@@ -142,7 +160,8 @@ public class ListMyRoomActivity extends AppCompatActivity {
 
         //===========================Thread Start===========================
         search = new Search();
-        listMyRoomThread = new ListMyRoomThread(handler,userId, search);
+        search.setCurrentPage(page);
+        listMyRoomThread = new ListMyRoomThread(handler,userId, search,TWIIOurl);
         listMyRoomThread.start();
 
         //===========================SearchButton Event===========================
@@ -166,7 +185,7 @@ public class ListMyRoomActivity extends AppCompatActivity {
 
                 search.setSearchKeyword(searchKeyword.getText().toString());
 
-                listMyRoomThread = new ListMyRoomThread(handler, userId, search);
+                listMyRoomThread = new ListMyRoomThread(handler, userId, search,TWIIOurl);
                 listMyRoomThread.start();
 
             }

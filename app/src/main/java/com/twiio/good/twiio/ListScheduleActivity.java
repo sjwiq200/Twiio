@@ -1,5 +1,6 @@
 package com.twiio.good.twiio;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,33 +15,27 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.Schedule;
 import com.twiio.good.twiio.thread.ListScheduleThread;
 
 import java.util.List;
+import java.util.Properties;
 
 public class ListScheduleActivity extends AppCompatActivity {
 
     String userId;
     ListScheduleThread listScheduleThread;
 
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
 
-            /*
-            List<Schedule> list = (List<Schedule>)message.obj;
-            LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ListScheduleActivity.this,R.layout.activity_inflatelist,null); //new Layout
-            ScrollView scrollView = (ScrollView)findViewById(R.id.listScheduleScroll);
-            for(Schedule schedule : list){
-                TextView textView = new TextView(ListScheduleActivity.this);
-                textView.setText("scheduleTitle = "+schedule.getScheduleTitle()+"Country = " + schedule.getCountry());
-
-                insertLinearLayout.addView(textView);
-            }
-            insertLinearLayout.setGravity(Gravity.CENTER);
-            scrollView.addView(insertLinearLayout);
-
-            */
 
             List<Schedule> list = (List<Schedule>)message.obj;
             ScrollView scrollView = (ScrollView)findViewById(R.id.listScheduleScroll);
@@ -89,12 +84,18 @@ public class ListScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listschedule);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
         //===========================Intent===========================
         Intent intent = this.getIntent();
         userId = intent.getStringExtra("userId");
 
         //===========================Thread Start===========================
-        listScheduleThread =  new ListScheduleThread(handler,userId);
+        listScheduleThread =  new ListScheduleThread(handler,userId,TWIIOurl);
         listScheduleThread.start();
 
 

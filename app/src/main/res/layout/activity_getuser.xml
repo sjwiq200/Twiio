@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:background="@drawable/chatmain">
+    android:paddingTop="10dp"
+    android:background="@color/color_light_yellow">
 
 
     <TextView
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="My Profile"
         android:layout_gravity="center"
-        android:textSize="70dp"
+        android:textSize="40dp"
         android:fontFamily="@font/pacifico"/>
 
     <LinearLayout
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="left"
-        android:layout_marginLeft="45dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp"
 
         >
 
@@ -33,32 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="15dp"
             android:textColor="@color/colorAccent"
-            android:text="아이디 : "
-            android:fontFamily="@font/nanumgothic"/>
-
-        <TextView
-            android:id="@+id/getUserId"
-            android:layout_marginLeft="50dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:paddingTop="10dp"
-            android:textAlignment="center"
-            android:background="@drawable/rounded_edittext"
-            android:text=""
-            android:fontFamily="@font/hoonpinkpungchar"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="@color/colorAccent"
-            android:layout_marginTop="20dp"
             android:text="이름 : "
             android:fontFamily="@font/nanumgothic"/>
 
@@ -66,21 +42,115 @@
             android:id="@+id/getUserName"
             android:layout_marginLeft="50dp"
             android:textStyle="bold"
+            android:textSize="15dp"
             android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:textSize="25dp"
+            android:layout_height="30dp"
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"
             android:textAlignment="center"
             android:background="@drawable/rounded_edittext"
             android:text=""
-            android:fontFamily="@font/hoonpinkpungchar"/>
+            android:fontFamily="@font/typojeongjol"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20dp"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="20dp"
+            android:text="생년월일 : "
+            android:fontFamily="@font/nanumgothic"/>
+
+        <TextView
+            android:id="@+id/getUserBirthday"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_edittext"
+            android:text=""
+            android:fontFamily="@font/typojeongjol"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="20dp"
+            android:text="핸드폰번호 : "
+            android:fontFamily="@font/nanumgothic"/>
+
+        <TextView
+            android:id="@+id/getUserPhone"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_edittext"
+            android:text=""
+            android:fontFamily="@font/typojeongjol"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="20dp"
+            android:text="평점 : "
+            android:fontFamily="@font/nanumgothic"/>
+
+        <TextView
+            android:id="@+id/getUserHost"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_edittext"
+            android:text=""
+            android:fontFamily="@font/typojeongjol"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginTop="20dp"
+            android:text="가입일자 : "
+            android:fontFamily="@font/nanumgothic"/>
+
+        <TextView
+            android:id="@+id/getUserEmail"
+            android:layout_marginLeft="50dp"
+            android:textStyle="bold"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
+            android:layout_marginTop="5dp"
+            android:paddingTop="10dp"
+            android:textAlignment="center"
+            android:background="@drawable/rounded_edittext"
+            android:text=""
+            android:fontFamily="@font/typojeongjol"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15dp"
             android:textColor="@color/colorAccent"
             android:layout_marginTop="20dp"
             android:text="가입일자 : "
@@ -91,14 +161,14 @@
             android:layout_marginLeft="50dp"
             android:textStyle="bold"
             android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:textSize="25dp"
+            android:layout_height="30dp"
+            android:textSize="15dp"
             android:layout_marginTop="5dp"
             android:paddingTop="10dp"
             android:textAlignment="center"
             android:background="@drawable/rounded_edittext"
             android:text=""
-            android:fontFamily="@font/hoonpinkpungchar"/>
+            android:fontFamily="@font/typojeongjol"/>
 
     </LinearLayout>
 

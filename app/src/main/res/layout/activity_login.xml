@@ -7,7 +7,7 @@
     tools:context="com.twiio.good.twiio.MainActivity"
     android:orientation="vertical"
     android:paddingTop="50dp"
-    android:background="@drawable/chatmain"
+    android:background="@color/color_light_yellow"
     >
 
 
@@ -28,6 +28,7 @@
         android:id="@+id/userIdText"
         android:layout_margin="10dp"
         android:layout_gravity="center"
+        android:fontFamily="@font/typojeongjol"
         android:textStyle="bold"
         android:textSize="20dp"/>
 
@@ -70,19 +71,25 @@
             android:id="@+id/mypage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="mypage" />
+            android:text="mypage"
+            android:background="@drawable/rounded_edittext2"/>
 
         <Button
             android:id="@+id/twiiChat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TwiiChat" />
+            android:text="TwiiChat"
+            android:background="@drawable/rounded_edittext2"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
 
         <Button
             android:id="@+id/twiiBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TwiiBook" />
+            android:text="TwiiBook"
+            android:background="@drawable/rounded_edittext2"
+            android:fadingEdge=""/>
 
 
     </LinearLayout>

@@ -28,10 +28,14 @@ import java.util.List;
 public class RestSchedule {
 
 //    String fixUrl = "http://192.168.0.29:8080/schedule/json/";
-    String fixUrl = "http://192.168.0.33:8080/schedule/json/";
+//    String fixUrl = "http://192.168.0.54:8080/schedule/json/";
 //    String fixUrl = "http://172.30.1.37:8080/schedule/json/";
+    String fixUrl;
 
     public RestSchedule() {
+    }
+    public RestSchedule(String url){
+        this.fixUrl = url+":8080/schedule/json/";
     }
 
     public List<Schedule> listSchedule(Search search, String userId) throws Exception{

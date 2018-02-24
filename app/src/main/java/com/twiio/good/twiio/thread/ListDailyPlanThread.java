@@ -14,19 +14,21 @@ public class ListDailyPlanThread extends Thread {
 
     private Handler handler;
     private int mainPlanNo;
+    private String url;
 
     public ListDailyPlanThread() {
     }
 
-    public ListDailyPlanThread(Handler handler, int mainPlanNo) {
+    public ListDailyPlanThread(Handler handler, int mainPlanNo,String url) {
         this.handler = handler;
         this.mainPlanNo = mainPlanNo;
+        this.url = url;
     }
 
     @Override
     public void run() {
         System.out.println(this.getClass()+".run()");
-        RestDailyPlan restDailyPlan = new RestDailyPlan();
+        RestDailyPlan restDailyPlan = new RestDailyPlan(url);
 
         try{
             Message message = new Message();

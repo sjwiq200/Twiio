@@ -34,10 +34,17 @@ import java.util.List;
 
 public class RestMainPlan {
 
-    String fixUrl = "http://192.168.0.33:8080/mainplan/json/";
-    private String urlThumbnail = "http://192.168.0.33:8080/mainplan/json/uploadImage/";
+//    String fixUrl = "http://192.168.0.54:8080/mainplan/json/";
+    String fixUrl;
+//    private String urlThumbnail = "http://192.168.0.54:8080/mainplan/json/uploadImage/";
+    private String urlThumbnail;
 
     public RestMainPlan() {
+    }
+    public RestMainPlan(String url){
+        this.fixUrl = url+":8080/mainplan/json/";
+        this.urlThumbnail=url+":8080/mainplan/json/uploadImage/";
+
     }
 
     public List<MainPlan> listMainPlan(String userId) throws Exception{

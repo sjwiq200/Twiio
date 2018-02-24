@@ -1,6 +1,7 @@
 package com.twiio.good.twiio;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,9 +11,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.User;
 import com.twiio.good.twiio.rest.RestUser;
 import com.twiio.good.twiio.thread.AddUserThread;
+
+import java.util.Properties;
 
 public class JoinActivity extends AppCompatActivity {
 
@@ -23,6 +27,14 @@ public class JoinActivity extends AppCompatActivity {
     Button back;
     User user;
     AddUserThread addUserThread;
+
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
+
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
@@ -42,6 +54,13 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
+
         idJoin =  (EditText)findViewById(R.id.idJoin);
         passwordJoin = (EditText)findViewById(R.id.passwordJoin);
         nameJoin = (EditText)findViewById(R.id.nameJoin);
@@ -56,7 +75,7 @@ public class JoinActivity extends AppCompatActivity {
                 user.setPassword(passwordJoin.getText().toString());
                 user.setUserName(nameJoin.getText().toString());
 
-                addUserThread = new AddUserThread(handler, user);
+                addUserThread = new AddUserThread(handler, user,TWIIOurl);
                 addUserThread.start();
             }
         });

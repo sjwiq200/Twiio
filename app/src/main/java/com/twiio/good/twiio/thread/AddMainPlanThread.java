@@ -22,16 +22,18 @@ public class AddMainPlanThread extends Thread {
     private User user;
     //private MultipartEntityBuilder builder;
     private String imagePath;
+    private String url;
 
     public AddMainPlanThread() {
     }
 
-    public AddMainPlanThread(Handler handler, String userId, MainPlan mainPlan, String imagePath) {
+    public AddMainPlanThread(Handler handler, String userId, MainPlan mainPlan, String imagePath, String url) {
         this.handler = handler;
         this.userId = userId;
         this.mainPlan = mainPlan;
         //this.builder = builder;
         this.imagePath = imagePath;
+        this.url = url;
         user= new User();
         user.setUserId(userId);
         mainPlan.setUser(user);
@@ -40,7 +42,7 @@ public class AddMainPlanThread extends Thread {
     @Override
     public void run() {
         System.out.println(this.getClass()+".run()");
-        RestMainPlan restMainPlan = new RestMainPlan();
+        RestMainPlan restMainPlan = new RestMainPlan(url);
 
         try{
             Message message = new Message();

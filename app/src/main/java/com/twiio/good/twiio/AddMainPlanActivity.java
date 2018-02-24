@@ -2,6 +2,7 @@ package com.twiio.good.twiio;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.domain.MainPlan;
 import com.twiio.good.twiio.thread.AddMainPlanThread;
 import com.twiio.good.twiio.thread.ListMainPlanThread;
@@ -44,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Created by bitcamp on 2018-02-14.
@@ -78,6 +81,12 @@ public class AddMainPlanActivity extends AppCompatActivity {
 
     AddMainPlanThread addMainPlanThread;
 
+    String TWIIOurl;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
 
     private Handler handler = new Handler(){
         public void handleMessage(Message message){
@@ -99,6 +108,12 @@ public class AddMainPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmainplan);
 
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
         //===========================Layout===========================
         addMainPlanDone = (Button)findViewById(R.id.addMainPlan_done);
         cancel = (Button)findViewById(R.id.cancel);
@@ -115,9 +130,6 @@ public class AddMainPlanActivity extends AppCompatActivity {
         System.out.println("userId :: "+userId);
         //userNo = intent.getIntExtra("userNo",0);
 
-        //===========================Thread Start===========================
-        //listMainPlanThread = new ListMainPlanThread(handler,userId);
-        //listMainPlanThread.start();
 
         //===========================addMainPlanDone Click Event===========================
         addMainPlanDone.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +150,7 @@ public class AddMainPlanActivity extends AppCompatActivity {
                 System.out.println("mainPlan.fileName :: "+mainPlan.getMainThumbnail());
 
                 System.out.println("userId :: :: "+userId);
-                addMainPlanThread = new AddMainPlanThread(handler, userId, mainPlan, imagePath);
+                addMainPlanThread = new AddMainPlanThread(handler, userId, mainPlan, imagePath,TWIIOurl);
                 addMainPlanThread.start();
 
 

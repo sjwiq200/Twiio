@@ -14,16 +14,18 @@ public class LoginThread extends Thread{
 
     private Handler handler;
     private String userId;
+    private String url;
     public LoginThread() {
     }
 
-    public LoginThread(Handler handler, String userId){
+    public LoginThread(Handler handler, String userId,String url){
         this.handler = handler;
         this.userId = userId;
+        this.url = url;
     }
 
     public void run(){
-        RestUser restUser = new RestUser();
+        RestUser restUser = new RestUser(url);
         System.out.println("SOcketThread.run() ==>" + userId);
 
         try{

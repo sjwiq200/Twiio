@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 public class SendImageThread extends Thread{
     private Handler handler;
     private MultipartEntityBuilder builder;
-    private String url = "http://192.168.0.33:8282/v1/uploadImage";
+    private String url = "http://192.168.0.54:8282/v1/uploadImage";
 
 
 

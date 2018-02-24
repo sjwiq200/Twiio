@@ -15,19 +15,21 @@ import com.twiio.good.twiio.rest.RestUser;
 public class ListRoomThread extends Thread{
     private Handler handler;
     private Search search;
+    private String url;
 
     public ListRoomThread() {
     }
 
-    public ListRoomThread(Handler handler, Search search){
+    public ListRoomThread(Handler handler, Search search,String url){
         this.handler = handler;
         this.search = search;
+        this.url = url;
     }
 
 
     public void run(){
         System.out.println(this.getClass()+".run()");
-        RestRoom restRoom = new RestRoom();
+        RestRoom restRoom = new RestRoom(url);
 
         try{
             Message message = new Message();

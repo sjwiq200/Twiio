@@ -15,19 +15,21 @@ public class ListMyRoomThread extends Thread{
     private Handler handler;
     private String userId;
     private Search search;
+    private String url;
 
     public ListMyRoomThread() {
     }
 
-    public ListMyRoomThread(Handler handler, String userId, Search search){
+    public ListMyRoomThread(Handler handler, String userId, Search search,String url){
         this.handler = handler;
         this.userId = userId;
         this.search = search;
+        this.url = url;
     }
 
 
     public void run(){
-        RestRoom restRoom = new RestRoom();
+        RestRoom restRoom = new RestRoom(url);
 
         try{
             Message message = new Message();

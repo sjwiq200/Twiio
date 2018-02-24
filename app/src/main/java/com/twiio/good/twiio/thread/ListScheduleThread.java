@@ -15,18 +15,20 @@ import com.twiio.good.twiio.rest.RestSchedule;
 public class ListScheduleThread extends Thread{
     private Handler handler;
     private String userId;
+    private String url;
 
     public ListScheduleThread() {
     }
 
-    public ListScheduleThread(Handler handler, String userId){
+    public ListScheduleThread(Handler handler, String userId,String url){
         this.handler = handler;
         this.userId = userId;
+        this.url = url;
     }
 
 
     public void run(){
-        RestSchedule restSchedule = new RestSchedule();
+        RestSchedule restSchedule = new RestSchedule(url);
 
         try{
             Search search = new Search();

@@ -1,7 +1,10 @@
 package com.twiio.good.twiio;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -33,6 +36,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.squareup.picasso.Picasso;
+import com.twiio.good.twiio.common.AssetsPropertyReader;
 import com.twiio.good.twiio.thread.AddRoomUserThread;
 import com.twiio.good.twiio.thread.SendImageThread;
 
@@ -46,6 +50,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Properties;
 
 public class ChatRoomActivity extends AppCompatActivity {
 
@@ -55,6 +60,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     String roomKey;
     int master;
     Button imageButton;
+    String TWIIOurl;
 
     String token;
 
@@ -64,6 +70,15 @@ public class ChatRoomActivity extends AppCompatActivity {
 
     SendImageThread sendImageThread;
     AddRoomUserThread addRoomUserThread;
+
+    private AssetsPropertyReader assetsPropertyReader;
+    private Context context;
+    private Properties p;
+
+
+
+
+
 
     private  Handler handler = new Handler(){
         public void HandleMessage(Message message){
@@ -79,15 +94,13 @@ public class ChatRoomActivity extends AppCompatActivity {
     };
 
 
-//    String userAvatar = "http://192.168.0.29:8080/resources/images/room/";
-    String userAvatar = "http://192.0.0.33:8080/resources/images/userimages/";
-//    String userAvatar = "http://172.30.1.37:8080/resources/images/room/";
-    String url = "http://192.168.0.33:8282/#/v1/";
-//    String url = "http://192.168.0.9:8282/#/v1/";
-//    String url = "http://172.30.1.37:8282/#/v1/";
-
-    String imageUrl = "http://192.168.0.33:8282/app/upload/images/";
-//    String imageUrl = "http://172.30.1.37:8282/app/upload/images/";
+//    String userAvatar = "http://192.0.0.54:8080/resources/images/userimages/";
+//    String url = "http://192.168.0.54:8282/#/v1/";
+//    String imageUrl = "http://192.168.0.54:8282/app/upload/images/";
+    String userAvatar;
+    String url;
+    String imageUrl;
+    String mapUrl;
 
     private Socket socket;
 
@@ -121,6 +134,20 @@ public class ChatRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
+
+        //===========================properties===========================
+        context = this;
+        assetsPropertyReader = new AssetsPropertyReader(context);
+        p = assetsPropertyReader.getProperties("TwiioURL.properties");
+        TWIIOurl = p.getProperty("TwiioURL");
+
+
+        System.out.println("properties test ==> " + TWIIOurl);
+
+        userAvatar = TWIIOurl+":8080/resources/images/userimages/";
+        url = TWIIOurl+":8282/#/v1/";
+        imageUrl = TWIIOurl+":8282/app/upload/images/";
+        mapUrl = TWIIOurl+":8282/app/upload/map/";
 
         //===========================FCM Test===========================
         token = FirebaseInstanceId.getInstance().getToken();
@@ -264,6 +291,7 @@ public class ChatRoomActivity extends AppCompatActivity {
             socket.on("new message",onMessageReceived);
             socket.on("history response",onHistory);
             socket.on("new message image",onImageReceived);
+            socket.on("new message map",onMapReceived);
         }
         catch(Exception e){
             e.printStackTrace();
@@ -291,61 +319,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                     // inflation
                     LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ChatRoomActivity.this,R.layout.activity_inflatechat,null); //new Layout
                     LinearLayout linearLayout = (LinearLayout)findViewById(R.id.chatRoomMessage);
-
-
-                    /*
-                    TextView textView = new TextView(ChatRoomActivity.this);
-                    try{
-                        textView.setText(response.get("userName")+" : " + response.get("msg"));
-                        if(response.get("userName").toString().equals(userId)){
-                            textView.setGravity(Gravity.RIGHT);
-                        }
-                        else{
-                            textView.setGravity(Gravity.LEFT);
-                        }
-                        insertLinearLayout.addView(textView);
-                        linearLayout.addView(insertLinearLayout);
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    */
-
-//                    TextView textView = new TextView(ChatRoomActivity.this);
-//                    ViewGroup.LayoutParams width = null;
-//                    Drawable drawableTo = getResources().getDrawable(
-//                            R.drawable.rounded_edittext2);
-//                    Drawable drawableFrom = getResources().getDrawable(
-//                            R.drawable.rounded_edittext);
-//                    try{
-//                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
-//                        if(response.get("userName").toString().equals(userId)){
-//                            textView.setText(response.get("msg")+" ");
-//                            textView.setBackground(drawableTo);
-//                            textView.setTextSize(20);
-//                            width = new ViewGroup.LayoutParams((("  "+response.get("msg")+" ").length()*55)/2, 90);
-//                            insertLinearLayout.setGravity(Gravity.RIGHT);
-//                            insertLinearLayout.setPadding(10,10,10, 0);
-//                            textView.setGravity(Gravity.RIGHT);
-//
-//
-//                        }
-//                        else{
-//                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
-//                            textView.setBackground(drawableFrom);
-//                            textView.setTextSize(20);
-//                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
-//                            insertLinearLayout.setGravity(Gravity.LEFT);
-//                            insertLinearLayout.setPadding(10,10,10, 0);
-//                            textView.setGravity(Gravity.LEFT);
-//                        }
-//                        insertLinearLayout.addView(textView, width);
-//                        linearLayout.addView(insertLinearLayout);
-//                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-//                    }
-
 
                     try {
                         // textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
@@ -386,7 +359,15 @@ public class ChatRoomActivity extends AppCompatActivity {
                             insertLinearLayout.setGravity(Gravity.LEFT);
                         }
                         linearLayout.addView(insertLinearLayout);
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+
+
                     }
                     catch(Exception e){
                         e.printStackTrace();
@@ -419,36 +400,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                             //=========================== Inflation ===========================
                             LinearLayout insertLinearLayout = (LinearLayout) View.inflate(ChatRoomActivity.this, R.layout.activity_inflatechat, null); //new Layout
                             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.chatRoomMessage);
-
-//                            if(jsonObjectResponse.get("hasFile").toString().equals("false")){
-//                                TextView textView = new TextView(ChatRoomActivity.this);
-//                                ViewGroup.LayoutParams width = null;
-//                                Drawable drawableTo = getResources().getDrawable(R.drawable.rounded_edittext2);
-//                                Drawable drawableFrom = getResources().getDrawable(R.drawable.rounded_edittext);
-//                                textView.setText("  "+jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg"));
-//
-//                                if(jsonObjectResponse.get("userName").toString().equals(userId)){
-//                                    textView.setText(jsonObjectResponse.get("msg")+" ");
-//                                    textView.setBackground(drawableTo);
-//                                    textView.setTextSize(20);
-//                                    width = new ViewGroup.LayoutParams((("  "+jsonObjectResponse.get("msg")+" ").length()*55)/2, 90);
-//                                    insertLinearLayout.setGravity(Gravity.RIGHT);
-//                                    insertLinearLayout.setPadding(10,10,10, 0);
-//                                    textView.setGravity(Gravity.RIGHT);
-//                                }
-//                                else{
-//                                    textView.setWidth((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length());
-//                                    textView.setBackground(drawableFrom);
-//                                    textView.setTextSize(20);
-//                                    width = new ViewGroup.LayoutParams(((jsonObjectResponse.get("userName")+" : " + jsonObjectResponse.get("msg")).length()*55)/2, 90);
-//                                    insertLinearLayout.setGravity(Gravity.LEFT);
-//                                    insertLinearLayout.setPadding(10,10,10, 0);
-//                                    textView.setGravity(Gravity.LEFT);
-//                                }
-//
-//                                insertLinearLayout.addView(textView, width);
-//                                linearLayout.addView(insertLinearLayout);
-//                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 
                             if(jsonObjectResponse.get("hasFile").toString().equals("false")){
 
@@ -495,7 +446,15 @@ public class ChatRoomActivity extends AppCompatActivity {
                                 }
 
                                 linearLayout.addView(insertLinearLayout);
-                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+                                scrollView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                                    }
+                                });
+
                             }//END hasFile is False
 
                             else{
@@ -536,7 +495,16 @@ public class ChatRoomActivity extends AppCompatActivity {
                                     }
 //                        insertLinearLayout.addView(textView, width);
                                     linearLayout.addView(insertLinearLayout);
-                                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+//                                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+                                    scrollView.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                                        }
+                                    });
+
+
                                 }
                                 catch(Exception e){
                                     e.printStackTrace();
@@ -604,7 +572,88 @@ public class ChatRoomActivity extends AppCompatActivity {
                         }
 //                        insertLinearLayout.addView(textView, width);
                         linearLayout.addView(insertLinearLayout);
-                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+
+
+                    }
+                    catch(Exception e){
+                        e.printStackTrace();
+                    }
+
+                }//END run()
+            });
+
+        }
+    }; //END onImageReceived
+
+
+
+    private Emitter.Listener onMapReceived = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            final JSONObject response = (JSONObject) args[0];
+            System.out.println("onMapReceived ==> " + response);
+
+            ChatRoomActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ChatRoomActivity.this,R.layout.activity_inflatechat,null); //new Layout
+                    LinearLayout linearLayout = (LinearLayout)findViewById(R.id.chatRoomMessage);
+
+
+                    TextView textView = new TextView(ChatRoomActivity.this);
+                    ImageView imageView = new ImageView(ChatRoomActivity.this);
+
+                    ViewGroup.LayoutParams width = null;
+                    Drawable drawableTo = getResources().getDrawable(R.drawable.rounded_edittext2);
+                    Drawable drawableFrom = getResources().getDrawable(R.drawable.rounded_edittext);
+                    try{
+                        Picasso.with(ChatRoomActivity.this).load(mapUrl+response.get("serverfilename")).into(imageView);
+//                        textView.setText("  "+response.get("userName")+" : " + response.get("msg"));
+
+
+                        textView.setText("  "+response.get("userName"));
+                        if(response.get("userName").toString().equals(userId)){
+                            imageView.setBackground(drawableTo);
+
+                            insertLinearLayout.setGravity(Gravity.RIGHT);
+                            insertLinearLayout.setPadding(10,10,10, 0);
+
+                            imageView.setForegroundGravity(Gravity.RIGHT);
+                            insertLinearLayout.addView(imageView,600,500);
+
+                        }
+                        else{
+//                            textView.setWidth((response.get("userName")+" : " + response.get("msg")).length());
+                            textView.setWidth((response.get("userName")+"").length());
+                            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+
+                            // textView.setBackground(drawableFrom);
+//                            textView.setTextSize(20);
+//                            width = new ViewGroup.LayoutParams(((response.get("userName")+" : " + response.get("msg")).length()*55)/2, 90);
+                            insertLinearLayout.setGravity(Gravity.LEFT);
+                            insertLinearLayout.setPadding(10,0,10, 0);
+                            textView.setGravity(Gravity.LEFT);
+                            insertLinearLayout.addView(textView,200,50);
+                            insertLinearLayout.addView(imageView,600,500);
+                        }
+//                        insertLinearLayout.addView(textView, width);
+                        linearLayout.addView(insertLinearLayout);
+
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
+
+
                     }
                     catch(Exception e){
                         e.printStackTrace();
@@ -628,15 +677,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                 String absolutePath = getImageNameToUri(data.getData());
                 String fileName = absolutePath.substring(absolutePath.lastIndexOf("/")+1);
                 try{
-                    //=========================== Inflation ===========================
-//                    LinearLayout insertLinearLayout = (LinearLayout)View.inflate(ChatRoomActivity.this,R.layout.activity_inflatechat,null); //new Layout
-//                    LinearLayout linearLayout = (LinearLayout)findViewById(R.id.chatRoomMessage);
-//                    Bitmap image_bitmap 	= MediaStore.Images.Media.getBitmap(getContentResolver(),data.getData());
-//                    ImageView imageView = new ImageView(ChatRoomActivity.this);
-//                    imageView.setImageBitmap(image_bitmap);
-//                    insertLinearLayout.addView(imageView);
-//                    linearLayout.addView(insertLinearLayout);
-//                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 
                     //Send Image
                     sendImage(absolutePath,fileName);
